@@ -26,14 +26,6 @@ public class SubcategoryService {
         subcategoryRepository.deleteById(id);
     }
 
-//    public void updateProduct(Product newProduct){
-//        productRepository.save(newProduct);
-//    }
-//
-//    public void createProduct(Product product){
-//        productRepository.save(product);
-//    }
-
     public void createOrUpdateSubcategory(Subcategory newSubcategory) {
         subcategoryRepository.save(newSubcategory);
     }
