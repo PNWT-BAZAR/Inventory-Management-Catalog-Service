@@ -33,4 +33,15 @@ public class Product {
 
     private int reviewSum;
     private int totalReviews;
+
+    public Product(String name, String description, int quantity, float price, Category category, Subcategory subcategory, int reviewSum, int totalReviews) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.price = price;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.reviewSum = reviewSum;
+        this.totalReviews = totalReviews;
+    }
 }

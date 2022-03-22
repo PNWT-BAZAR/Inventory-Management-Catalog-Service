@@ -22,4 +22,8 @@ public class ProductImages {
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
+
+    public ProductImages(Product product) {
+        this.product = product;
+    }
 }

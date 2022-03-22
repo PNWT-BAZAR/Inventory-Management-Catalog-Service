@@ -22,4 +22,9 @@ public class Subcategory {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
+
+    public Subcategory(String name, Category category) {
+        this.name = name;
+        this.category = category;
+    }
 }
