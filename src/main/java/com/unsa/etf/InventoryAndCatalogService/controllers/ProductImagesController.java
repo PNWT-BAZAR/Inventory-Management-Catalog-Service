@@ -17,27 +17,27 @@ public class ProductImagesController {
         this.productImagesService = productImagesService;
     }
 
-    @GetMapping("/get")
+    @GetMapping
     public List<ProductImages> getAllProductImages() {
         return productImagesService.getAllProductImages();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ProductImages getProductImageById(@PathVariable String id) {
         return productImagesService.getProductImageById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public void createNewProductImage(@RequestBody ProductImages productImages) {
         productImagesService.createOrUpdateProductImage(productImages);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProductImage(@PathVariable String id) {
         productImagesService.deleteProductImageById(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public void updateProductImage(@RequestBody ProductImages productImages) {
         productImagesService.createOrUpdateProductImage(productImages);
     }

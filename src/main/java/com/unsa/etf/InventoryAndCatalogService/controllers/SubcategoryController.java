@@ -17,27 +17,27 @@ public class SubcategoryController {
         this.subcategoryService = subcategoryService;
     }
 
-    @GetMapping("/get")
+    @GetMapping
     public List<Subcategory> getAllSubcategories() {
         return subcategoryService.getAllSubcategories();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public Subcategory getSubcategoryById(@PathVariable String id) {
         return subcategoryService.getSubcategoryById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public void createNewSubcategory(@RequestBody Subcategory subcategory) {
         subcategoryService.createOrUpdateSubcategory(subcategory);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteSubcategory(@PathVariable String id) {
         subcategoryService.deleteSubcategoryById(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public void updateSubcategory(@RequestBody Subcategory subcategory) {
         subcategoryService.createOrUpdateSubcategory(subcategory);
     }
