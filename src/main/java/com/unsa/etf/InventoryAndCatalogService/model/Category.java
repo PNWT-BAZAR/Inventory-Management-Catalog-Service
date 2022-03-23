@@ -19,7 +19,6 @@ public class Category {
     @Column(columnDefinition = "CHAR(32)")
     private String id;
 
-
     private String name;
 
     public Category(String name) {
