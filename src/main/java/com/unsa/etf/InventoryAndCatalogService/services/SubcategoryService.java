@@ -21,14 +21,22 @@ public class SubcategoryService {
     }
 
     public Subcategory getSubcategoryById(String id) {
-        return subcategoryRepository.findById(id).get();
+        var subcategory = subcategoryRepository.findById(id);
+        if(subcategory.isPresent())
+            return subcategoryRepository.findById(id).get();
+        return null;
     }
 
-    public void deleteSubcategoryById(String id) {
-        subcategoryRepository.deleteById(id);
+    public boolean deleteSubcategoryById(String id) {
+        if(getSubcategoryById(id) != null){
+            subcategoryRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
-    public void createOrUpdateSubcategory(Subcategory newSubcategory) {
+    public Subcategory createOrUpdateSubcategory(Subcategory newSubcategory) {
         subcategoryRepository.save(newSubcategory);
+        return newSubcategory;
     }
 }

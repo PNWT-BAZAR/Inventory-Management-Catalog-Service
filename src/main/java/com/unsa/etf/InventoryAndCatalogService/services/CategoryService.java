@@ -21,14 +21,22 @@ public class CategoryService {
     }
 
     public Category getCategoryById(String id) {
-        return categoryRepository.findById(id).get();
+        var category = categoryRepository.findById(id);
+        if(category.isPresent())
+            return categoryRepository.findById(id).get();
+        return null;
     }
 
-    public void deleteCategoryById(String id) {
-        categoryRepository.deleteById(id);
+    public boolean deleteCategoryById(String id) {
+        if(getCategoryById(id) != null){
+            categoryRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
-    public void createOrUpdateCategory(Category newCategory) {
+    public Category createOrUpdateCategory(Category newCategory) {
         categoryRepository.save(newCategory);
+        return newCategory;
     }
 }

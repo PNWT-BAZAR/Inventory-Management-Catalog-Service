@@ -4,9 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -22,9 +20,11 @@ public class Product {
     @Column(columnDefinition = "CHAR(32)")
     private String id;
 
+    @Size(min = 1, max = 250)
     @NotBlank
     private String name;
 
+    @Size(min = 1, max = 1000)
     @NotBlank
     private String description;
 

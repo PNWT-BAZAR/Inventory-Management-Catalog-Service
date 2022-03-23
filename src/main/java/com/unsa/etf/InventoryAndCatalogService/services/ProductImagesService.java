@@ -22,15 +22,23 @@ public class ProductImagesService {
     }
 
     public ProductImages getProductImageById(String id) {
-        return productImagesRepository.findById(id).get();
+        var productImage = productImagesRepository.findById(id);
+        if(productImage.isPresent())
+            return productImagesRepository.findById(id).get();
+        return null;
     }
 
-    public void deleteProductImageById(String id) {
-        productImagesRepository.deleteById(id);
+    public boolean deleteProductImageById(String id) {
+        if(getProductImageById(id) != null){
+            productImagesRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
-    public void createOrUpdateProductImage(ProductImages productImages) {
+    public ProductImages createOrUpdateProductImage(ProductImages productImages) {
         productImagesRepository.save(productImages);
+        return productImages;
     }
 
     // TODO: 22.03.2022. get images

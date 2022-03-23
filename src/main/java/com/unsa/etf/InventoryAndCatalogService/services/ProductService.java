@@ -21,11 +21,18 @@ public class ProductService {
     }
 
     public Product getProductById(String id) {
-        return productRepository.findById(id).get();
+        var product = productRepository.findById(id);
+        if(product.isPresent())
+            return productRepository.findById(id).get();
+        return null;
     }
 
-    public void deleteProductById(String id) {
-        productRepository.deleteById(id);
+    public boolean deleteProductById(String id) {
+        if(getProductById(id) != null){
+            productRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 //    public void updateProduct(Product newProduct){
@@ -36,7 +43,8 @@ public class ProductService {
 //        productRepository.save(product);
 //    }
 
-    public void createOrUpdateProduct(Product newProduct) {
+    public Product createOrUpdateProduct(Product newProduct) {
         productRepository.save(newProduct);
+        return newProduct;
     }
 }
