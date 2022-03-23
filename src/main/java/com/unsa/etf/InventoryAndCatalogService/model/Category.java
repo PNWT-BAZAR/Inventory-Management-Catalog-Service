@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ public class Category {
     @Column(columnDefinition = "CHAR(32)")
     private String id;
 
+    @NotBlank
     private String name;
 
     public Category(String name) {
