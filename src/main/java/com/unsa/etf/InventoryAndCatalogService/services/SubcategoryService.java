@@ -21,14 +21,14 @@ public class SubcategoryService {
     }
 
     public Subcategory getSubcategoryById(String id) {
-        var subcategory = subcategoryRepository.findById(id);
-        if(subcategory.isPresent())
+        if(subcategoryRepository.existsById(id)) {
             return subcategoryRepository.findById(id).get();
+        }
         return null;
     }
 
     public boolean deleteSubcategoryById(String id) {
-        if(getSubcategoryById(id) != null){
+        if (subcategoryRepository.existsById(id)) {
             subcategoryRepository.deleteById(id);
             return true;
         }

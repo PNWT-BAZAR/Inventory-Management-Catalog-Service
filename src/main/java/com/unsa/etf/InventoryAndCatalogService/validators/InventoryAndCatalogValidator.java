@@ -9,6 +9,8 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
+import static com.unsa.etf.InventoryAndCatalogService.validators.BadRequestResponseBody.*;
+
 @Component
 public class InventoryAndCatalogValidator {
     private static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -18,7 +20,7 @@ public class InventoryAndCatalogValidator {
         return validator.validate(object).isEmpty();
     }
 
-    public String determineConstraintViolation (Object object){
+    public BadRequestResponseBody determineConstraintViolation (Object object){
 
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
         ConstraintViolation<Object> violation;
@@ -26,16 +28,16 @@ public class InventoryAndCatalogValidator {
         if(!violations.isEmpty()){
             violation = violations.iterator().next();
             if(violation.getMessageTemplate().equals("{javax.validation.constraints.NotBlank.message}")){
-                return "Parameter " + violation.getPropertyPath() + " is missing";
+                return new BadRequestResponseBody(ErrorCode.VALIDATION, "Parameter " + violation.getPropertyPath() + " is missing");
             }else if (violation.getMessageTemplate().equals("{javax.validation.constraints.NotNull.message}")){
-                return "Parameter " + violation.getPropertyPath() + " is null";
+                return new BadRequestResponseBody(ErrorCode.VALIDATION, "Parameter " + violation.getPropertyPath() + " is null");
             }else if (violation.getMessageTemplate().equals("{javax.validation.constraints.Size.message}")){
-                return "The size of parameter " + violation.getPropertyPath() + " is incorrect";
+                return new BadRequestResponseBody(ErrorCode.VALIDATION, "The size of parameter " + violation.getPropertyPath() + " is incorrect");
             }else if (violation.getMessageTemplate().equals("{javax.validation.constraints.Min.message}")){
-                return "The parameter " + violation.getPropertyPath() + " must me greater than 0";
+                return new BadRequestResponseBody(ErrorCode.VALIDATION, "The parameter " + violation.getPropertyPath() + " must me greater than 0");
             }
         }
 
-        return "";
+        return null;
     }
 }

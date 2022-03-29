@@ -21,14 +21,14 @@ public class ProductService {
     }
 
     public Product getProductById(String id) {
-        var product = productRepository.findById(id);
-        if(product.isPresent())
+        if(productRepository.existsById(id)) {
             return productRepository.findById(id).get();
+        }
         return null;
     }
 
     public boolean deleteProductById(String id) {
-        if(getProductById(id) != null){
+        if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
             return true;
         }

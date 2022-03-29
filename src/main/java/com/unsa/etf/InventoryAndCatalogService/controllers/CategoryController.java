@@ -4,7 +4,9 @@ import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.services.CategoryService;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
+import com.unsa.etf.InventoryAndCatalogService.validators.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,15 +31,20 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable String id) {
-        return categoryService.getCategoryById(id);
+    public ResponseEntity<?> getCategoryById(@PathVariable String id) {
+        Category category = categoryService.getCategoryById(id);
+        if (category == null) {
+            return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Category Does Not Exist!"));
+        }
+        return ResponseEntity.status(200).body(category);
     }
 
     @PostMapping
     public ResponseEntity<?> createNewCategory(@RequestBody Category category) {
-        if (inventoryAndCatalogValidator.isValid(category))
-            return ResponseEntity.status(200).body(categoryService.createOrUpdateCategory(category));
-        else
+        if (inventoryAndCatalogValidator.isValid(category)) {
+            Category newCategory = categoryService.createOrUpdateCategory(category);
+            return ResponseEntity.status(200).body(newCategory);
+        }else
             return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(category));
     }
 
@@ -46,16 +53,17 @@ public class CategoryController {
         boolean deleted = categoryService.deleteCategoryById(id);
         if (deleted)
             return ResponseEntity.status(200).body("Object successfully deleted");
-        return ResponseEntity.status(409).body("Object with id: " + id + " does not exist");
+        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Category Does Not Exist!"));
     }
 
     @PutMapping
     public ResponseEntity<?> updateCategory(@RequestBody Category category) {
-        if (!inventoryAndCatalogValidator.isValid(category))
-            return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(category));
+        if (inventoryAndCatalogValidator.isValid(category)) {
+            Category updatedCategory = categoryService.createOrUpdateCategory(category);
+            return ResponseEntity.status(200).body(updatedCategory);
+        }
+        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(category));
 
-        Category newCategory = categoryService.createOrUpdateCategory(category);
-        return ResponseEntity.status(200).body("Successfully updated product: " + newCategory);
     }
 
 }

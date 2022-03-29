@@ -4,6 +4,7 @@ import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.model.ProductImages;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductImagesService;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
+import com.unsa.etf.InventoryAndCatalogService.validators.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,30 +30,38 @@ public class ProductImagesController {
     }
 
     @GetMapping("/{id}")
-    public ProductImages getProductImageById(@PathVariable String id) {
-        return productImagesService.getProductImageById(id);
+    public ResponseEntity<?> getProductImageById(@PathVariable String id) {
+        ProductImages productImages = productImagesService.getProductImageById(id);
+        if (productImages == null) {
+            return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
+        }
+        return ResponseEntity.status(200).body(productImages);
     }
 
     @PostMapping
     public ResponseEntity<?> createNewProductImage(@RequestBody ProductImages productImages) {
-        return ResponseEntity.status(200).body(productImagesService.createOrUpdateProductImage(productImages));
+        if (inventoryAndCatalogValidator.isValid(productImages)) {
+            ProductImages newProductImage = productImagesService.createOrUpdateProductImage(productImages);
+            return ResponseEntity.status(200).body(productImages);
+        }
+        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(productImages));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProductImage(@PathVariable String id) {
         boolean deleted = productImagesService.deleteProductImageById(id);
         if (deleted)
-            return ResponseEntity.status(200).body("Object successfully deleted");
-        return ResponseEntity.status(409).body("Object with id: " + id + " does not exist");
+            return ResponseEntity.status(200).body("Product image successfully deleted");
+        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
     }
 
     @PutMapping
     public ResponseEntity<?> updateProductImage(@RequestBody ProductImages productImages) {
-        if (!inventoryAndCatalogValidator.isValid(productImages))
-            return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(productImages));
-
-        ProductImages newProductImages = productImagesService.createOrUpdateProductImage(productImages);
-        return ResponseEntity.status(200).body("Successfully updated product: " + newProductImages);
+        if (inventoryAndCatalogValidator.isValid(productImages)) {
+            ProductImages updatedProductImage = productImagesService.createOrUpdateProductImage(productImages);
+            return ResponseEntity.status(200).body(updatedProductImage);
+        }
+        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(productImages));
     }
 
 }

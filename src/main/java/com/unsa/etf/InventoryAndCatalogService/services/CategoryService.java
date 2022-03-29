@@ -21,19 +21,23 @@ public class CategoryService {
     }
 
     public Category getCategoryById(String id) {
-        var category = categoryRepository.findById(id);
-        if(category.isPresent())
+        if(categoryRepository.existsById(id)) {
             return categoryRepository.findById(id).get();
+        }
         return null;
     }
 
     public boolean deleteCategoryById(String id) {
-        if(getCategoryById(id) != null){
+        if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
             return true;
         }
         return false;
     }
+
+//    public Category createNewCategory(Category category){
+////
+////    }
 
     public Category createOrUpdateCategory(Category newCategory) {
         categoryRepository.save(newCategory);

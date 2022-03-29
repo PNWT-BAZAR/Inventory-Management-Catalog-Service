@@ -1,7 +1,9 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
+import com.unsa.etf.InventoryAndCatalogService.model.ProductImages;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.services.SubcategoryService;
+import com.unsa.etf.InventoryAndCatalogService.validators.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +29,21 @@ public class SubcategoryController {
     }
 
     @GetMapping("/{id}")
-    public Subcategory getSubcategoryById(@PathVariable String id) {
-        return subcategoryService.getSubcategoryById(id);
+    public ResponseEntity<?> getSubcategoryById(@PathVariable String id) {
+        Subcategory subcategory = subcategoryService.getSubcategoryById(id);
+        if (subcategory == null) {
+            return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Subcategory Does Not Exist!"));
+        }
+        return ResponseEntity.status(200).body(subcategory);
     }
 
     @PostMapping
     public ResponseEntity<?> createNewSubcategory(@RequestBody Subcategory subcategory) {
-        if (inventoryAndCatalogValidator.isValid(subcategory))
-            return ResponseEntity.status(200).body(subcategoryService.createOrUpdateSubcategory(subcategory));
-        else
-            return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
+        if (inventoryAndCatalogValidator.isValid(subcategory)) {
+            Subcategory newSubcategory = subcategoryService.createOrUpdateSubcategory(subcategory);
+            return ResponseEntity.status(200).body(subcategory);
+        }
+        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
     }
 
     @DeleteMapping("/{id}")
@@ -44,15 +51,15 @@ public class SubcategoryController {
         boolean deleted = subcategoryService.deleteSubcategoryById(id);
         if (deleted)
             return ResponseEntity.status(200).body("Object successfully deleted");
-        return ResponseEntity.status(409).body("Object with id: " + id + " does not exist");
+        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Subcategory Does Not Exist!"));
     }
 
     @PutMapping
     public ResponseEntity<?> updateSubcategory(@RequestBody Subcategory subcategory) {
-        if (!inventoryAndCatalogValidator.isValid(subcategory))
-            return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
-
-        Subcategory newSubcategory = subcategoryService.createOrUpdateSubcategory(subcategory);
-        return ResponseEntity.status(200).body("Successfully updated product: " + newSubcategory);
+        if (inventoryAndCatalogValidator.isValid(subcategory)) {
+            Subcategory updatedSubcategory = subcategoryService.createOrUpdateSubcategory(subcategory);
+            return ResponseEntity.status(200).body(updatedSubcategory);
+        }
+        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
     }
 }

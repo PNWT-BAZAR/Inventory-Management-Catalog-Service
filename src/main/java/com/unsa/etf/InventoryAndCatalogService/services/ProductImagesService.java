@@ -22,14 +22,14 @@ public class ProductImagesService {
     }
 
     public ProductImages getProductImageById(String id) {
-        var productImage = productImagesRepository.findById(id);
-        if(productImage.isPresent())
+        if(productImagesRepository.existsById(id)) {
             return productImagesRepository.findById(id).get();
+        }
         return null;
     }
 
     public boolean deleteProductImageById(String id) {
-        if(getProductImageById(id) != null){
+        if (productImagesRepository.existsById(id)) {
             productImagesRepository.deleteById(id);
             return true;
         }
