@@ -5,6 +5,7 @@ import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
 import com.unsa.etf.InventoryAndCatalogService.validators.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,18 @@ public class ProductController {
             return ResponseEntity.status(200).body(updatedProduct);
         }
         return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(product));
+    }
+
+
+    //Sorting and Pagination
+    @GetMapping("/search")
+    public ResponseEntity<?> readProducts (Pageable pageable){
+        var x = pageable.getSort();
+        for (var s : pageable.getSort()){
+            System.out.println(s.getProperty());
+        }
+        // TODO: 30.03.2022. error handling kad sortiranje po nepostojecem
+        return ResponseEntity.status(200).body(productService.readAndSortProducts(pageable));
     }
 
 }

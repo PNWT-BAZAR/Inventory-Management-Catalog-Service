@@ -1,13 +1,8 @@
 package com.unsa.etf.InventoryAndCatalogService.repositories;
 
-import com.unsa.etf.InventoryAndCatalogService.AppConfig;
+import com.unsa.etf.InventoryAndCatalogService.TestConfig;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
-import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
-import com.unsa.etf.InventoryAndCatalogService.repositories.CategoryRepository;
-import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
-import com.unsa.etf.InventoryAndCatalogService.repositories.SubcategoryRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration(
-        classes = { AppConfig.class },
+        classes = { TestConfig.class },
         loader = AnnotationConfigContextLoader.class)
 @DataJpaTest
 public class SubcategoryRepositoryTest {

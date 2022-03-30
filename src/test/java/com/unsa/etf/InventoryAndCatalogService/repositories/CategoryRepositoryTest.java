@@ -1,14 +1,12 @@
 package com.unsa.etf.InventoryAndCatalogService.repositories;
 
-import com.unsa.etf.InventoryAndCatalogService.AppConfig;
+import com.unsa.etf.InventoryAndCatalogService.TestConfig;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
-import com.unsa.etf.InventoryAndCatalogService.repositories.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.List;
@@ -17,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration(
-        classes = { AppConfig.class },
+        classes = { TestConfig.class },
         loader = AnnotationConfigContextLoader.class)
 @DataJpaTest
 public class CategoryRepositoryTest {

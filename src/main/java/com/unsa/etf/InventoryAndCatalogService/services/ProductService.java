@@ -1,8 +1,12 @@
 package com.unsa.etf.InventoryAndCatalogService.services;
 
+import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
+import com.unsa.etf.InventoryAndCatalogService.utils.PaginatedObjectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +50,11 @@ public class ProductService {
     public Product createOrUpdateProduct(Product newProduct) {
         productRepository.save(newProduct);
         return newProduct;
+    }
+
+    //Sorting and Pagination
+    public PaginatedObjectResponse<Product> readAndSortProducts (Pageable pageable){
+        Page<Product> products = productRepository.findAll(pageable);
+        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
     }
 }

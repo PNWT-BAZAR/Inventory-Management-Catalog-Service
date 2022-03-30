@@ -8,6 +8,7 @@ import com.unsa.etf.InventoryAndCatalogService.validators.BadRequestResponseBody
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +65,17 @@ public class CategoryController {
         }
         return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(category));
 
+    }
+
+    //Sorting and Pagination
+    @GetMapping("/search")
+    public ResponseEntity<?> readCategories (Pageable pageable){
+        var x = pageable.getSort();
+        for (var s : pageable.getSort()){
+            System.out.println(s.getProperty());
+        }
+        // TODO: 30.03.2022. error handling kad sortiranje po nepostojecem
+        return ResponseEntity.status(200).body(categoryService.readAndSortCategories(pageable));
     }
 
 }

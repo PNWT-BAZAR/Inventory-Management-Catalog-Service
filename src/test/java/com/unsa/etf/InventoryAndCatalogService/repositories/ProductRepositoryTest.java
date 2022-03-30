@@ -1,7 +1,7 @@
 package com.unsa.etf.InventoryAndCatalogService.repositories;
 
 
-import com.unsa.etf.InventoryAndCatalogService.AppConfig;
+import com.unsa.etf.InventoryAndCatalogService.TestConfig;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration(
-        classes = { AppConfig.class },
+        classes = { TestConfig.class },
         loader = AnnotationConfigContextLoader.class)
 @DataJpaTest
 public class ProductRepositoryTest {
