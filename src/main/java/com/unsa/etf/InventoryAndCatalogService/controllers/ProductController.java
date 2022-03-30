@@ -1,9 +1,11 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
+import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
+import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
-import com.unsa.etf.InventoryAndCatalogService.validators.BadRequestResponseBody;
-import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
+import com.unsa.etf.InventoryAndCatalogService.utils.validators.BadRequestResponseBody;
+import com.unsa.etf.InventoryAndCatalogService.utils.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -73,6 +75,20 @@ public class ProductController {
         }catch (PropertyReferenceException e){
             return ResponseEntity.status(409).body(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage()));
         }
+    }
+
+    //Filtering
+    @GetMapping("/filter")
+    public ResponseEntity readProductsWithFilter (@RequestParam(value = "category", required = false) String category, @RequestParam(value = "subcategory", required = false) String subcategory, Pageable pageable) {
+        if(category != null && subcategory != null){
+            return ResponseEntity.status(200).body(productService.filterProductsByCategoryAndSubcategory(category, subcategory, pageable));
+        }else if(category != null){
+            return ResponseEntity.status(200).body(productService.filterProductsByCategory(category, pageable));
+        }else if(subcategory != null){
+            return ResponseEntity.status(200).body(productService.filterProductsBySubcategory(subcategory, pageable));
+        }
+        System.out.println("test");
+        return ResponseEntity.status(409).body(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, "test"));
     }
 
 }

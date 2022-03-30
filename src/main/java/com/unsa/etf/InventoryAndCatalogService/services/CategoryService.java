@@ -49,6 +49,7 @@ public class CategoryService {
 
     //Sorting and Pagination
     public PaginatedObjectResponse<Category> readAndSortCategories (Pageable pageable){
+
         Page<Category> categories = categoryRepository.findAll(pageable);
         return new PaginatedObjectResponse<>(categories.getContent(), categories.getTotalElements(), categories.getTotalPages());
     }

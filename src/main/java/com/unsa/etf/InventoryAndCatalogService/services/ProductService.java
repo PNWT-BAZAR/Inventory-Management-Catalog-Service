@@ -2,6 +2,7 @@ package com.unsa.etf.InventoryAndCatalogService.services;
 
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
+import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
 import com.unsa.etf.InventoryAndCatalogService.utils.PaginatedObjectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,4 +58,22 @@ public class ProductService {
         Page<Product> products = productRepository.findAll(pageable);
         return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
     }
+
+    //Filtering
+    public PaginatedObjectResponse<Product> filterProductsByCategoryAndSubcategory(String category, String subcategory, Pageable pageable) {
+        Page<Product> products = productRepository.findProductByCategoryAndSubcategory(category, subcategory, pageable);
+        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
+    }
+
+    public PaginatedObjectResponse<Product> filterProductsByCategory(String category, Pageable pageable) {
+        Page<Product> products = productRepository.findProductByCategory(category, pageable);
+        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
+    }
+
+    public PaginatedObjectResponse<Product> filterProductsBySubcategory(String subcategory, Pageable pageable) {
+        Page<Product> products = productRepository.findProductBySubcategory(subcategory, pageable);
+        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
+    }
+
+
 }
