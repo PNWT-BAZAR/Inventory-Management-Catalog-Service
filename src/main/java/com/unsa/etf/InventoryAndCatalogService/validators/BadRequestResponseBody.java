@@ -10,11 +10,6 @@ public class BadRequestResponseBody {
     private ErrorCode error;
     private String message;
 
-//    public BadRequestResponseBody(ErrorCode validation, String s) {
-////        this.error = error;
-////        this.message = s;
-////    }
-
     public enum ErrorCode {
         VALIDATION,
         NOT_FOUND,

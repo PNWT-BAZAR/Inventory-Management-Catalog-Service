@@ -9,6 +9,7 @@ import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogVal
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,12 +71,11 @@ public class CategoryController {
     //Sorting and Pagination
     @GetMapping("/search")
     public ResponseEntity<?> readCategories (Pageable pageable){
-        var x = pageable.getSort();
-        for (var s : pageable.getSort()){
-            System.out.println(s.getProperty());
+        try{
+            return ResponseEntity.status(200).body(categoryService.readAndSortCategories(pageable));
+        }catch (PropertyReferenceException e){
+            return ResponseEntity.status(409).body(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage()));
         }
-        // TODO: 30.03.2022. error handling kad sortiranje po nepostojecem
-        return ResponseEntity.status(200).body(categoryService.readAndSortCategories(pageable));
     }
 
 }
