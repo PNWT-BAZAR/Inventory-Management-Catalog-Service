@@ -1,10 +1,8 @@
 package com.unsa.etf.InventoryAndCatalogService.services;
 
-import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
-import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
-import com.unsa.etf.InventoryAndCatalogService.utils.PaginatedObjectResponse;
+import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

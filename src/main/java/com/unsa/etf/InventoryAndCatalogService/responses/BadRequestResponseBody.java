@@ -1,4 +1,4 @@
-package com.unsa.etf.InventoryAndCatalogService.utils.validators;
+package com.unsa.etf.InventoryAndCatalogService.responses;
 
 import lombok.*;
 

@@ -1,5 +1,6 @@
-package com.unsa.etf.InventoryAndCatalogService.utils.validators;
+package com.unsa.etf.InventoryAndCatalogService.validators;
 
+import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
@@ -8,7 +9,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
-import static com.unsa.etf.InventoryAndCatalogService.utils.validators.BadRequestResponseBody.*;
+import static com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody.*;
 
 @Component
 public class InventoryAndCatalogValidator {

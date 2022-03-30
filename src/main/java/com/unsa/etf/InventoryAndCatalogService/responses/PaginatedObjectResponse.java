@@ -1,4 +1,4 @@
-package com.unsa.etf.InventoryAndCatalogService.utils;
+package com.unsa.etf.InventoryAndCatalogService.responses;
 
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import lombok.AllArgsConstructor;

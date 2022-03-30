@@ -2,8 +2,8 @@ package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.services.CategoryService;
-import com.unsa.etf.InventoryAndCatalogService.utils.validators.BadRequestResponseBody;
-import com.unsa.etf.InventoryAndCatalogService.utils.validators.InventoryAndCatalogValidator;
+import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
+import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
