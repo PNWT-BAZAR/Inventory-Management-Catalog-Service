@@ -30,4 +30,11 @@ public class Category {
     public Category(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        Category otherCat = (Category)other;
+        return this.getName().equals(otherCat.getName());
+    }
 }

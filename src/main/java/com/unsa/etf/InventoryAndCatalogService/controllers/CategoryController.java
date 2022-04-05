@@ -51,7 +51,7 @@ public class CategoryController {
     public ResponseEntity<?> deleteCategory(@PathVariable String id) {
         boolean deleted = categoryService.deleteCategoryById(id);
         if (deleted)
-            return ResponseEntity.status(200).body("Object successfully deleted");
+            return ResponseEntity.status(200).body("Category Successfully Deleted!");
         return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Category Does Not Exist!"));
     }
 
