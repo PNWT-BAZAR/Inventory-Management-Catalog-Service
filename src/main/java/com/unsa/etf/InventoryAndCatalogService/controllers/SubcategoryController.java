@@ -51,7 +51,7 @@ public class SubcategoryController {
     public ResponseEntity<?> deleteSubcategory(@PathVariable String id) {
         boolean deleted = subcategoryService.deleteSubcategoryById(id);
         if (deleted)
-            return ResponseEntity.status(200).body("Object successfully deleted");
+            return ResponseEntity.status(200).body("Subcategory successfully deleted!");
         return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Subcategory Does Not Exist!"));
     }
 

@@ -31,4 +31,11 @@ public class Subcategory {
         this.name = name;
         this.category = category;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        Subcategory otherSubcat = (Subcategory) other;
+        return this.getName().equals(otherSubcat.getName()) && this.getCategory().equals(otherSubcat.getCategory());
+    }
 }
