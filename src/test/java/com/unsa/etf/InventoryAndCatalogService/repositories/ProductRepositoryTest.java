@@ -66,7 +66,7 @@ public class ProductRepositoryTest {
 
     @Test
     public void deleteTest(){
-        Product product2 = getProductMock("test2","test2", CATEGORY_HELPER);
+        Product product2 = getProductMock("test2","test2", CATEGORY_HELPER, SUBCATEGORY_HELPER);
         productRepository.save(PRODUCT_MOCK);
         productRepository.save(product2);
         productRepository.delete(PRODUCT_MOCK);

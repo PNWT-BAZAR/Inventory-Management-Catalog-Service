@@ -7,6 +7,7 @@ import com.unsa.etf.InventoryAndCatalogService.repositories.CategoryRepository;
 import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
 import com.unsa.etf.InventoryAndCatalogService.services.CategoryService;
+import com.unsa.etf.InventoryAndCatalogService.utils.InventoryTestMocks;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.apiguardian.api.API;
 import org.assertj.core.util.Arrays;
@@ -33,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CategoryController.class)
 public class CategoryControllerTest {
     private final String API_ROUTE = "/categories";
+    private final Category CATEGORY_MOCK = InventoryTestMocks.getCategoryMock("categoryName");
 
     @MockBean
     CategoryService categoryService;
@@ -53,16 +55,14 @@ public class CategoryControllerTest {
 
     @Test
     public void shouldReturnOneCategory() throws Exception{
-        Category category = new Category("name");
-        given(categoryService.getCategoryById("id")).willReturn(category);
+        given(categoryService.getCategoryById("id")).willReturn(CATEGORY_MOCK);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(category.getName())));
+                .andExpect(jsonPath("$.name", is(CATEGORY_MOCK.getName())));
     }
 
     @Test
     public void shouldNotReturnCategory() throws Exception{
-        Category category = new Category("name");
         given(categoryService.getCategoryById("id")).willReturn(null);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
                 .andExpect(status().is(409))
@@ -71,11 +71,10 @@ public class CategoryControllerTest {
 
     @Test
     public void shouldCreateNewCategory() throws Exception{
-        Category category = new Category("name");
-        given(categoryService.createOrUpdateCategory(category)).willReturn(category);
-        given(inventoryAndCatalogValidator.isValid(category)).willReturn(true);
+        given(categoryService.createOrUpdateCategory(CATEGORY_MOCK)).willReturn(CATEGORY_MOCK);
+        given(inventoryAndCatalogValidator.isValid(CATEGORY_MOCK)).willReturn(true);
         mockMvc.perform(post(API_ROUTE)
-                .content(asJsonString(category))
+                .content(asJsonString(CATEGORY_MOCK))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -85,12 +84,11 @@ public class CategoryControllerTest {
 
     @Test
     public void shouldNotCreateNewCategoryWhenValidationFails() throws Exception{
-        Category category = new Category("name");
-        given(categoryService.createOrUpdateCategory(category)).willReturn(category);
-        given(inventoryAndCatalogValidator.isValid(category)).willReturn(false);
-        given(inventoryAndCatalogValidator.determineConstraintViolation(category)).willReturn(new BadRequestResponseBody(null, "Error message"));
+        given(categoryService.createOrUpdateCategory(CATEGORY_MOCK)).willReturn(CATEGORY_MOCK);
+        given(inventoryAndCatalogValidator.isValid(CATEGORY_MOCK)).willReturn(false);
+        given(inventoryAndCatalogValidator.determineConstraintViolation(CATEGORY_MOCK)).willReturn(new BadRequestResponseBody(null, "Error message"));
         mockMvc.perform(post(API_ROUTE)
-                .content(asJsonString(category))
+                .content(asJsonString(CATEGORY_MOCK))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(409))
@@ -117,9 +115,8 @@ public class CategoryControllerTest {
 
     @Test
     public void shouldReturnPageableListOfCategories() throws Exception{
-        Category category = new Category("categoryName");
-        Category category2 = new Category("categoryName2");
-        given(categoryService.readAndSortCategories(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(List.of(category, category2), 5, 1));
+        Category category2 = InventoryTestMocks.getCategoryMock("categoryName2");
+        given(categoryService.readAndSortCategories(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(List.of(CATEGORY_MOCK, category2), 5, 1));
         this.mockMvc.perform(get(API_ROUTE + "/search?size=5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.foundObjects").exists())

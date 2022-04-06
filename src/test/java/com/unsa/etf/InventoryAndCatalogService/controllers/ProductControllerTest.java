@@ -2,10 +2,12 @@ package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
+import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
 import com.unsa.etf.InventoryAndCatalogService.services.CategoryService;
+import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
 import com.unsa.etf.InventoryAndCatalogService.services.SubcategoryService;
 import com.unsa.etf.InventoryAndCatalogService.utils.InventoryTestMocks;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,19 +25,21 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(SubcategoryController.class)
-public class SubcategoryControllerTest {
-    private final String API_ROUTE = "/subcategories";
+@WebMvcTest(ProductController.class)
+public class ProductControllerTest {
+    private final String API_ROUTE = "/products";
     private final Category CATEGORY_MOCK = InventoryTestMocks.getCategoryMock("categoryName");
     private final Subcategory SUBCATEGORY_MOCK = InventoryTestMocks.getSubcategoryMock("subcategoryName", CATEGORY_MOCK);
+    private final Product PRODUCT_MOCK = InventoryTestMocks.getProductMock("productName", "description", CATEGORY_MOCK, SUBCATEGORY_MOCK);
 
     @MockBean
-    SubcategoryService subcategoryService;
+    ProductService productService;
 
     @MockBean
     InventoryAndCatalogValidator inventoryAndCatalogValidator;
@@ -44,34 +49,34 @@ public class SubcategoryControllerTest {
 
     @Test
     public void shouldReturnEmptyList() throws Exception {
-        given(subcategoryService.getAllSubcategories()).willReturn(Collections.emptyList());
+        given(productService.getAllProducts()).willReturn(Collections.emptyList());
         this.mockMvc.perform(get(API_ROUTE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
-    public void shouldReturnOneSubcategory() throws Exception{
-        given(subcategoryService.getSubcategoryById("id")).willReturn(SUBCATEGORY_MOCK);
+    public void shouldReturnOneProduct() throws Exception{
+        given(productService.getProductById("id")).willReturn(PRODUCT_MOCK);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(SUBCATEGORY_MOCK.getName())));
+                .andExpect(jsonPath("$.name", is(PRODUCT_MOCK.getName())));
     }
 
     @Test
-    public void shouldNotReturnSubcategory() throws Exception{
-        given(subcategoryService.getSubcategoryById("id")).willReturn(null);
+    public void shouldNotReturnProduct() throws Exception{
+        given(productService.getProductById("id")).willReturn(null);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$.message", is("Subcategory Does Not Exist!")));
+                .andExpect(jsonPath("$.message", is("Product Does Not Exist!")));
     }
 
     @Test
-    public void shouldCreateNewSubcategory() throws Exception{
-        given(subcategoryService.createOrUpdateSubcategory(SUBCATEGORY_MOCK)).willReturn(SUBCATEGORY_MOCK);
-        given(inventoryAndCatalogValidator.isValid(SUBCATEGORY_MOCK)).willReturn(true);
+    public void shouldCreateNewProduct() throws Exception{
+        given(productService.createOrUpdateProduct(PRODUCT_MOCK)).willReturn(PRODUCT_MOCK);
+        given(inventoryAndCatalogValidator.isValid(PRODUCT_MOCK)).willReturn(true);
         mockMvc.perform(post(API_ROUTE)
-                .content(asJsonString(SUBCATEGORY_MOCK))
+                .content(asJsonString(PRODUCT_MOCK))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -80,12 +85,11 @@ public class SubcategoryControllerTest {
     }
 
     @Test
-    public void shouldNotCreateNewSubcategoryWhenValidationFails() throws Exception{
-        given(subcategoryService.createOrUpdateSubcategory(SUBCATEGORY_MOCK)).willReturn(SUBCATEGORY_MOCK);
-        given(inventoryAndCatalogValidator.isValid(SUBCATEGORY_MOCK)).willReturn(false);
-        given(inventoryAndCatalogValidator.determineConstraintViolation(SUBCATEGORY_MOCK)).willReturn(new BadRequestResponseBody(null, "Error message"));
+    public void shouldNotCreateNewProductWhenValidationFails() throws Exception{
+        given(inventoryAndCatalogValidator.isValid(PRODUCT_MOCK)).willReturn(false);
+        given(inventoryAndCatalogValidator.determineConstraintViolation(PRODUCT_MOCK)).willReturn(new BadRequestResponseBody(null, "Error message"));
         mockMvc.perform(post(API_ROUTE)
-                .content(asJsonString(SUBCATEGORY_MOCK))
+                .content(asJsonString(PRODUCT_MOCK))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(409))
@@ -94,33 +98,43 @@ public class SubcategoryControllerTest {
     }
 
     @Test
-    public void shouldDeleteSubcategory() throws Exception {
-        given(subcategoryService.deleteSubcategoryById("id")).willReturn(true);
+    public void shouldDeleteProduct() throws Exception {
+        given(productService.deleteProductById("id")).willReturn(true);
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is("Subcategory successfully deleted!")));
+                .andExpect(jsonPath("$", is("Product successfully deleted!")));
     }
 
     @Test
-    public void shouldNotDeleteNonExistantSubcategory() throws Exception {
+    public void shouldNotDeleteNonExistantProduct() throws Exception {
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message", is("Subcategory Does Not Exist!")));
+                .andExpect(jsonPath("$.message", is("Product Does Not Exist!")));
     }
 
     @Test
-    public void shouldReturnPageableListOfSubcategories() throws Exception{
-        Category category2 = InventoryTestMocks.getCategoryMock("categoryName2");
-        Subcategory subcategory2 = InventoryTestMocks.getSubcategoryMock("subcategoryName2", category2);
-        given(subcategoryService.readAndSortSubcategories(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(List.of(SUBCATEGORY_MOCK, subcategory2), 5, 1));
+    public void shouldReturnPageableListOfProducts() throws Exception{
+        Product product2 = InventoryTestMocks.getProductMock("productName2", "description2", InventoryTestMocks.getCategoryMock("categoryName2"), InventoryTestMocks.getSubcategoryMock("subcategoryName2", InventoryTestMocks.getCategoryMock("categoryName2")));
+        given(productService.readAndSortProducts(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(List.of(PRODUCT_MOCK, product2), 5, 1));
         this.mockMvc.perform(get(API_ROUTE + "/search?size=5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.foundObjects").exists())
                 .andExpect(jsonPath("$.foundObjects[0].name").exists())
                 .andExpect(jsonPath("$.foundObjects[1].name").exists());
     }
+
+//    @Test
+//    public void shouldNotReturnPageableListOfProducts() throws Exception{
+//        Product product2 = InventoryTestMocks.getProductMock("productName2", "description2", InventoryTestMocks.getCategoryMock("categoryName2"), InventoryTestMocks.getSubcategoryMock("subcategoryName2", InventoryTestMocks.getCategoryMock("categoryName2")));
+//        when(productService.readAndSortProducts(any(Pageable.class))).thenReturn(new PaginatedObjectResponse<>(List.of(PRODUCT_MOCK, product2), 5, 1))
+//        this.mockMvc.perform(get(API_ROUTE + "/search?size=5"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.foundObjects").exists())
+//                .andExpect(jsonPath("$.foundObjects[0].name").exists())
+//                .andExpect(jsonPath("$.foundObjects[1].name").exists());
+//    }
 
 
     public static String asJsonString(final Object obj) {

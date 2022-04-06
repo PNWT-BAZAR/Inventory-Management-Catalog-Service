@@ -51,7 +51,7 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(@PathVariable String id) {
         boolean deleted = productService.deleteProductById(id);
         if (deleted)
-            return ResponseEntity.status(200).body("Product successfully deleted");
+            return ResponseEntity.status(200).body("Product successfully deleted!");
         return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
     }
 

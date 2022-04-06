@@ -59,4 +59,11 @@ public class Product {
         this.reviewSum = reviewSum;
         this.totalReviews = totalReviews;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        Product otherProd = (Product)other;
+        return this.getName().equals(otherProd.getName());
+    }
 }
