@@ -1,5 +1,6 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
+import com.unsa.etf.InventoryAndCatalogService.insertObject.ProductReview;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
 import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
@@ -64,6 +65,18 @@ public class ProductController {
         return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(product));
     }
 
+    @PutMapping("/reviewProduct/{id}")
+    public ResponseEntity<?> reviewProductById(@PathVariable String id, @RequestBody ProductReview productReview) {
+        Product product = productService.getProductById(id);
+        if (product != null) {
+            product.setReviewSum(product.getReviewSum() + productReview.getReviewValue());
+            product.setTotalReviews(product.getTotalReviews() + 1);
+
+            Product updatedProduct = productService.createOrUpdateProduct(product);
+            return ResponseEntity.status(200).body(updatedProduct);
+        }
+        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
+    }
 
     //Sorting and Pagination
     @GetMapping("/search")
