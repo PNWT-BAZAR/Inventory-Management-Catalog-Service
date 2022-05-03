@@ -146,6 +146,17 @@ public class ProductControllerTest {
 
     }
 
+    @Test
+    public void shouldNotReturnUpdatedAndReviewedProduct() throws Exception{
+        given(productService.getProductById("id")).willReturn(null);
+        this.mockMvc.perform(put(API_ROUTE + "/reviewProduct/{id}", "id")
+                        .content(asJsonString(new ProductReview(1)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("$.error.message", is("Product Does Not Exist!")));
+
+    }
+
 
     public static String asJsonString(final Object obj) {
         try {
