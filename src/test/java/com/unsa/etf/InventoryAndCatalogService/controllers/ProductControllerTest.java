@@ -1,6 +1,7 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unsa.etf.InventoryAndCatalogService.insertObject.ProductReview;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
@@ -52,7 +53,7 @@ public class ProductControllerTest {
         given(productService.getAllProducts()).willReturn(Collections.emptyList());
         this.mockMvc.perform(get(API_ROUTE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$.objectsList", hasSize(0)));
     }
 
     @Test
@@ -60,15 +61,14 @@ public class ProductControllerTest {
         given(productService.getProductById("id")).willReturn(PRODUCT_MOCK);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(PRODUCT_MOCK.getName())));
+                .andExpect(jsonPath("$.object.name", is(PRODUCT_MOCK.getName())));
     }
 
     @Test
     public void shouldNotReturnProduct() throws Exception{
         given(productService.getProductById("id")).willReturn(null);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
-                .andExpect(status().is(409))
-                .andExpect(jsonPath("$.message", is("Product Does Not Exist!")));
+                .andExpect(jsonPath("$.error.message", is("Product Does Not Exist!")));
     }
 
     @Test
@@ -92,8 +92,7 @@ public class ProductControllerTest {
                 .content(asJsonString(PRODUCT_MOCK))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(409))
-                .andExpect(jsonPath("$.message", is("Error message")));
+                .andExpect(jsonPath("$.error.message", is("Error message")));
 
     }
 
@@ -103,21 +102,20 @@ public class ProductControllerTest {
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is("Product successfully deleted!")));
+                .andExpect(jsonPath("$.message", is("Product successfully deleted!")));
     }
 
     @Test
     public void shouldNotDeleteNonExistantProduct() throws Exception {
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message", is("Product Does Not Exist!")));
+                .andExpect(jsonPath("$.error.message", is("Product Does Not Exist!")));
     }
 
     @Test
     public void shouldReturnPageableListOfProducts() throws Exception{
         Product product2 = InventoryTestMocks.getProductMock("productName2", "description2", InventoryTestMocks.getCategoryMock("categoryName2"), InventoryTestMocks.getSubcategoryMock("subcategoryName2", InventoryTestMocks.getCategoryMock("categoryName2")));
-        given(productService.readAndSortProducts(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(List.of(PRODUCT_MOCK, product2), 5, 1));
+        given(productService.readAndSortProducts(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(200, List.of(PRODUCT_MOCK, product2), 5, 1, null));
         this.mockMvc.perform(get(API_ROUTE + "/search?size=5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.foundObjects").exists())
@@ -125,16 +123,28 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.foundObjects[1].name").exists());
     }
 
-//    @Test
-//    public void shouldNotReturnPageableListOfProducts() throws Exception{
-//        Product product2 = InventoryTestMocks.getProductMock("productName2", "description2", InventoryTestMocks.getCategoryMock("categoryName2"), InventoryTestMocks.getSubcategoryMock("subcategoryName2", InventoryTestMocks.getCategoryMock("categoryName2")));
-//        when(productService.readAndSortProducts(any(Pageable.class))).thenReturn(new PaginatedObjectResponse<>(List.of(PRODUCT_MOCK, product2), 5, 1))
-//        this.mockMvc.perform(get(API_ROUTE + "/search?size=5"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.foundObjects").exists())
-//                .andExpect(jsonPath("$.foundObjects[0].name").exists())
-//                .andExpect(jsonPath("$.foundObjects[1].name").exists());
-//    }
+    @Test
+    public void shouldReturnUpdatedAndReviewedProduct() throws Exception{
+        var product2 = Product.builder()
+                .id("id")
+                .name("product2")
+                .description("description2")
+                .category(CATEGORY_MOCK)
+                .subcategory(SUBCATEGORY_MOCK)
+                .reviewSum(1)
+                .totalReviews(1)
+                .build();
+        given(productService.getProductById("id")).willReturn(PRODUCT_MOCK);
+        given(productService.createOrUpdateProduct(PRODUCT_MOCK)).willReturn(product2);
+        this.mockMvc.perform(put(API_ROUTE + "/reviewProduct/{id}", "id")
+                .content(asJsonString(new ProductReview(1)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.object.totalReviews", is(1)))
+                .andExpect(jsonPath("$.object.reviewSum", is(1)));
+
+    }
 
 
     public static String asJsonString(final Object obj) {

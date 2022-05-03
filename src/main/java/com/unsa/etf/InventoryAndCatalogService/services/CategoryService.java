@@ -51,6 +51,6 @@ public class CategoryService {
     public PaginatedObjectResponse<Category> readAndSortCategories (Pageable pageable){
 
         Page<Category> categories = categoryRepository.findAll(pageable);
-        return new PaginatedObjectResponse<>(categories.getContent(), categories.getTotalElements(), categories.getTotalPages());
+        return new PaginatedObjectResponse<>(200, categories.getContent(), categories.getTotalElements(), categories.getTotalPages(), null);
     }
 }

@@ -116,7 +116,7 @@ public class CategoryControllerTest {
     @Test
     public void shouldReturnPageableListOfCategories() throws Exception{
         Category category2 = InventoryTestMocks.getCategoryMock("categoryName2");
-        given(categoryService.readAndSortCategories(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(List.of(CATEGORY_MOCK, category2), 5, 1));
+        given(categoryService.readAndSortCategories(Pageable.ofSize(5))).willReturn(new PaginatedObjectResponse<>(200, List.of(CATEGORY_MOCK, category2), 5, 1, null));
         this.mockMvc.perform(get(API_ROUTE + "/search?size=5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.foundObjects").exists())

@@ -46,6 +46,6 @@ public class SubcategoryService {
     //Sorting and Pagination
     public PaginatedObjectResponse<Subcategory> readAndSortSubcategories (Pageable pageable){
         Page<Subcategory> subcategories = subcategoryRepository.findAll(pageable);
-        return new PaginatedObjectResponse<>(subcategories.getContent(), subcategories.getTotalElements(), subcategories.getTotalPages());
+        return new PaginatedObjectResponse<>(200, subcategories.getContent(), subcategories.getTotalElements(), subcategories.getTotalPages(), null);
     }
 }

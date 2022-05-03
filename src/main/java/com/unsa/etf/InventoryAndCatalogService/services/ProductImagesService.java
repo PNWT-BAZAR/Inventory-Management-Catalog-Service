@@ -49,6 +49,6 @@ public class ProductImagesService {
     //Sorting and Pagination
     public PaginatedObjectResponse<ProductImages> readAndSortProductImages (Pageable pageable){
         Page<ProductImages> productImages = productImagesRepository.findAll(pageable);
-        return new PaginatedObjectResponse<>(productImages.getContent(), productImages.getTotalElements(), productImages.getTotalPages());
+        return new PaginatedObjectResponse<>(200, productImages.getContent(), productImages.getTotalElements(), productImages.getTotalPages(), null);
     }
 }

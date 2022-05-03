@@ -54,23 +54,23 @@ public class ProductService {
     //Sorting and Pagination
     public PaginatedObjectResponse<Product> readAndSortProducts (Pageable pageable){
         Page<Product> products = productRepository.findAll(pageable);
-        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
+        return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
     }
 
     //Filtering
     public PaginatedObjectResponse<Product> filterProductsByCategoryAndSubcategory(String category, String subcategory, Pageable pageable) {
         Page<Product> products = productRepository.findProductByCategoryAndSubcategory(category, subcategory, pageable);
-        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
+        return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
     }
 
     public PaginatedObjectResponse<Product> filterProductsByCategory(String category, Pageable pageable) {
         Page<Product> products = productRepository.findProductByCategory(category, pageable);
-        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
+        return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
     }
 
     public PaginatedObjectResponse<Product> filterProductsBySubcategory(String subcategory, Pageable pageable) {
         Page<Product> products = productRepository.findProductBySubcategory(subcategory, pageable);
-        return new PaginatedObjectResponse<>(products.getContent(), products.getTotalElements(), products.getTotalPages());
+        return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
     }
 
 

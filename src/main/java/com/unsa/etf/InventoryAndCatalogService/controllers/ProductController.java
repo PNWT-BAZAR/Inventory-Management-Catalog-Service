@@ -2,8 +2,8 @@ package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.unsa.etf.InventoryAndCatalogService.insertObject.ProductReview;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
+import com.unsa.etf.InventoryAndCatalogService.responses.*;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
-import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -26,80 +26,79 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ObjectListResponse<Product> getAllProducts() {
+        return new ObjectListResponse<>(200, productService.getAllProducts(), null);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable String id) {
+    public ObjectResponse<Product> getProductById(@PathVariable String id) {
         Product product = productService.getProductById(id);
         if (product == null) {
-            return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
+            return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!" ));
         }
-        return ResponseEntity.status(200).body(product);
+        return new ObjectResponse<>(200, product, null);
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewProduct(@RequestBody Product product) {
+    public ObjectResponse<Product> createNewProduct(@RequestBody Product product) {
         if (inventoryAndCatalogValidator.isValid(product)) {
             Product newProduct = productService.createOrUpdateProduct(product);
-            return ResponseEntity.status(200).body(product);
+            return new ObjectResponse<>(200, product, null);
         }
-        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(product));
+        return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(product));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
+    public ObjectDeletionResponse deleteProduct(@PathVariable String id) {
         boolean deleted = productService.deleteProductById(id);
         if (deleted)
-            return ResponseEntity.status(200).body("Product successfully deleted!");
-        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
+            return new ObjectDeletionResponse(200, "Product successfully deleted!", null);
+        return new ObjectDeletionResponse(409, "Error has occurred!", new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProduct(@RequestBody Product product) {
+    public ObjectResponse<Product> updateProduct(@RequestBody Product product) {
         if (inventoryAndCatalogValidator.isValid(product)) {
             Product updatedProduct = productService.createOrUpdateProduct(product);
-            return ResponseEntity.status(200).body(updatedProduct);
+            return new ObjectResponse<>(200, updatedProduct, null);
         }
-        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(product));
+        return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(product));
     }
 
     @PutMapping("/reviewProduct/{id}")
-    public ResponseEntity<?> reviewProductById(@PathVariable String id, @RequestBody ProductReview productReview) {
+    public ObjectResponse<Product> reviewProductById(@PathVariable String id, @RequestBody ProductReview productReview) {
         Product product = productService.getProductById(id);
         if (product != null) {
             product.setReviewSum(product.getReviewSum() + productReview.getReviewValue());
             product.setTotalReviews(product.getTotalReviews() + 1);
 
             Product updatedProduct = productService.createOrUpdateProduct(product);
-            return ResponseEntity.status(200).body(updatedProduct);
+            return new ObjectResponse<>(200, updatedProduct, null);
         }
-        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
+        return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
     }
 
     //Sorting and Pagination
     @GetMapping("/search")
-    public ResponseEntity<?> readProducts (Pageable pageable){
+    public PaginatedObjectResponse<Product> readProducts (Pageable pageable){
         try{
-            return ResponseEntity.status(200).body(productService.readAndSortProducts(pageable));
+            return productService.readAndSortProducts(pageable);
         }catch (PropertyReferenceException e){
-            return ResponseEntity.status(409).body(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage()));
+            return PaginatedObjectResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
         }
     }
 
     //Filtering
     @GetMapping("/filter")
-    public ResponseEntity readProductsWithFilter (@RequestParam(value = "category", required = false) String category, @RequestParam(value = "subcategory", required = false) String subcategory, Pageable pageable) {
+    public PaginatedObjectResponse<Product> readProductsWithFilter (@RequestParam(value = "category", required = false) String category, @RequestParam(value = "subcategory", required = false) String subcategory, Pageable pageable) {
         if(category != null && subcategory != null){
-            return ResponseEntity.status(200).body(productService.filterProductsByCategoryAndSubcategory(category, subcategory, pageable));
+            return productService.filterProductsByCategoryAndSubcategory(category, subcategory, pageable);
         }else if(category != null){
-            return ResponseEntity.status(200).body(productService.filterProductsByCategory(category, pageable));
+            return productService.filterProductsByCategory(category, pageable);
         }else if(subcategory != null){
-            return ResponseEntity.status(200).body(productService.filterProductsBySubcategory(subcategory, pageable));
+            return productService.filterProductsBySubcategory(subcategory, pageable);
         }
-        System.out.println("test");
-        return ResponseEntity.status(409).body(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, "test"));
+        return PaginatedObjectResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, "An error has occurred!")).build();
     }
 
 }
