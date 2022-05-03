@@ -50,7 +50,7 @@ public class CategoryControllerTest {
         given(categoryService.getAllCategories()).willReturn(Collections.emptyList());
         this.mockMvc.perform(get(API_ROUTE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$.objectsList", hasSize(0)));
     }
 
     @Test
@@ -58,15 +58,14 @@ public class CategoryControllerTest {
         given(categoryService.getCategoryById("id")).willReturn(CATEGORY_MOCK);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(CATEGORY_MOCK.getName())));
+                .andExpect(jsonPath("$.object.name", is(CATEGORY_MOCK.getName())));
     }
 
     @Test
     public void shouldNotReturnCategory() throws Exception{
         given(categoryService.getCategoryById("id")).willReturn(null);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
-                .andExpect(status().is(409))
-                .andExpect(jsonPath("$.message", is("Category Does Not Exist!")));
+                .andExpect(jsonPath("$.error.message", is("Category Does Not Exist!")));
     }
 
     @Test
@@ -91,8 +90,7 @@ public class CategoryControllerTest {
                 .content(asJsonString(CATEGORY_MOCK))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(409))
-                .andExpect(jsonPath("$.message", is("Error message")));
+                .andExpect(jsonPath("$.error.message", is("Error message")));
 
     }
 
@@ -102,15 +100,14 @@ public class CategoryControllerTest {
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is("Category Successfully Deleted!")));
+                .andExpect(jsonPath("$.message", is("Category Successfully Deleted!")));
     }
 
     @Test
     public void shouldNotDeleteNonExistantCategory() throws Exception {
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message", is("Category Does Not Exist!")));
+                .andExpect(jsonPath("$.error.message", is("Category Does Not Exist!")));
     }
 
     @Test

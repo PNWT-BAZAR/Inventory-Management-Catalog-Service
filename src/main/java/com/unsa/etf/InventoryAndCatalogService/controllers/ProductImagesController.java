@@ -1,8 +1,8 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.unsa.etf.InventoryAndCatalogService.model.ProductImages;
+import com.unsa.etf.InventoryAndCatalogService.responses.*;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductImagesService;
-import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,52 +25,52 @@ public class ProductImagesController {
     }
 
     @GetMapping
-    public List<ProductImages> getAllProductImages() {
-        return productImagesService.getAllProductImages();
+    public ObjectListResponse<ProductImages> getAllProductImages() {
+        return new ObjectListResponse<>(200, productImagesService.getAllProductImages(), null);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductImageById(@PathVariable String id) {
+    public ObjectResponse<ProductImages> getProductImageById(@PathVariable String id) {
         ProductImages productImages = productImagesService.getProductImageById(id);
         if (productImages == null) {
-            return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
+            return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
         }
-        return ResponseEntity.status(200).body(productImages);
+        return new ObjectResponse<>(200, productImages, null);
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewProductImage(@RequestBody ProductImages productImages) {
+    public ObjectResponse<ProductImages> createNewProductImage(@RequestBody ProductImages productImages) {
         if (inventoryAndCatalogValidator.isValid(productImages)) {
             ProductImages newProductImage = productImagesService.createOrUpdateProductImage(productImages);
-            return ResponseEntity.status(200).body(productImages);
+            return new ObjectResponse<>(200, productImages, null);
         }
-        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(productImages));
+        return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(productImages));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProductImage(@PathVariable String id) {
+    public ObjectDeletionResponse deleteProductImage(@PathVariable String id) {
         boolean deleted = productImagesService.deleteProductImageById(id);
         if (deleted)
-            return ResponseEntity.status(200).body("Product image successfully deleted");
-        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
+            return new ObjectDeletionResponse(200, "Product image successfullz deleted", null);
+        return new ObjectDeletionResponse(409, "An error has occurred!", new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProductImage(@RequestBody ProductImages productImages) {
+    public ObjectResponse<ProductImages> updateProductImage(@RequestBody ProductImages productImages) {
         if (inventoryAndCatalogValidator.isValid(productImages)) {
             ProductImages updatedProductImage = productImagesService.createOrUpdateProductImage(productImages);
-            return ResponseEntity.status(200).body(updatedProductImage);
+            return new ObjectResponse<>(200, updatedProductImage, null);
         }
-        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(productImages));
+        return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(productImages));
     }
 
     //Sorting and Pagination
     @GetMapping("/search")
-    public ResponseEntity<?> readProductImages (Pageable pageable){
+    public PaginatedObjectResponse<ProductImages> readProductImages (Pageable pageable){
         try{
-            return ResponseEntity.status(200).body(productImagesService.readAndSortProductImages(pageable));
+            return productImagesService.readAndSortProductImages(pageable);
         }catch (PropertyReferenceException e){
-            return ResponseEntity.status(409).body(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage()));
+            return PaginatedObjectResponse.<ProductImages>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
         }
     }
 

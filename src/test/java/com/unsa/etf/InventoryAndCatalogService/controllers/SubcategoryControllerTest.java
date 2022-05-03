@@ -47,7 +47,7 @@ public class SubcategoryControllerTest {
         given(subcategoryService.getAllSubcategories()).willReturn(Collections.emptyList());
         this.mockMvc.perform(get(API_ROUTE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$.objectsList", hasSize(0)));
     }
 
     @Test
@@ -55,15 +55,14 @@ public class SubcategoryControllerTest {
         given(subcategoryService.getSubcategoryById("id")).willReturn(SUBCATEGORY_MOCK);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(SUBCATEGORY_MOCK.getName())));
+                .andExpect(jsonPath("$.object.name", is(SUBCATEGORY_MOCK.getName())));
     }
 
     @Test
     public void shouldNotReturnSubcategory() throws Exception{
         given(subcategoryService.getSubcategoryById("id")).willReturn(null);
         mockMvc.perform(get(API_ROUTE + "/{id}", "id"))
-                .andExpect(status().is(409))
-                .andExpect(jsonPath("$.message", is("Subcategory Does Not Exist!")));
+                .andExpect(jsonPath("$.error.message", is("Subcategory Does Not Exist!")));
     }
 
     @Test
@@ -88,8 +87,7 @@ public class SubcategoryControllerTest {
                 .content(asJsonString(SUBCATEGORY_MOCK))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(409))
-                .andExpect(jsonPath("$.message", is("Error message")));
+                .andExpect(jsonPath("$.error.message", is("Error message")));
 
     }
 
@@ -99,15 +97,14 @@ public class SubcategoryControllerTest {
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is("Subcategory successfully deleted!")));
+                .andExpect(jsonPath("$.message", is("Subcategory successfully deleted!")));
     }
 
     @Test
     public void shouldNotDeleteNonExistantSubcategory() throws Exception {
         mockMvc.perform(delete(API_ROUTE + "/{id}", "id")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message", is("Subcategory Does Not Exist!")));
+                .andExpect(jsonPath("$.error.message", is("Subcategory Does Not Exist!")));
     }
 
     @Test
