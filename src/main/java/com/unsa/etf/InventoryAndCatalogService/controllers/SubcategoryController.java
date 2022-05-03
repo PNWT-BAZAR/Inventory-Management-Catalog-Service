@@ -1,8 +1,8 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
+import com.unsa.etf.InventoryAndCatalogService.responses.*;
 import com.unsa.etf.InventoryAndCatalogService.services.SubcategoryService;
-import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,52 +25,52 @@ public class SubcategoryController {
     }
 
     @GetMapping
-    public List<Subcategory> getAllSubcategories() {
-        return subcategoryService.getAllSubcategories();
+    public ObjectListResponse<Subcategory> getAllSubcategories() {
+        return new ObjectListResponse<>(200, subcategoryService.getAllSubcategories(), null);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getSubcategoryById(@PathVariable String id) {
+    public ObjectResponse<Subcategory> getSubcategoryById(@PathVariable String id) {
         Subcategory subcategory = subcategoryService.getSubcategoryById(id);
         if (subcategory == null) {
-            return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Subcategory Does Not Exist!"));
+            return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Subcategory Does Not Exist!"));
         }
-        return ResponseEntity.status(200).body(subcategory);
+        return new ObjectResponse<>(200, subcategory, null);
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewSubcategory(@RequestBody Subcategory subcategory) {
+    public ObjectResponse<Subcategory> createNewSubcategory(@RequestBody Subcategory subcategory) {
         if (inventoryAndCatalogValidator.isValid(subcategory)) {
             Subcategory newSubcategory = subcategoryService.createOrUpdateSubcategory(subcategory);
-            return ResponseEntity.status(200).body(subcategory);
+            return new ObjectResponse<>(200, subcategory, null);
         }
-        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
+        return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSubcategory(@PathVariable String id) {
+    public ObjectDeletionResponse deleteSubcategory(@PathVariable String id) {
         boolean deleted = subcategoryService.deleteSubcategoryById(id);
         if (deleted)
-            return ResponseEntity.status(200).body("Subcategory successfully deleted!");
-        return ResponseEntity.status(409).body(new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Subcategory Does Not Exist!"));
+            return new ObjectDeletionResponse(200, "Subcategory successfully deleted!", null);
+        return new ObjectDeletionResponse(409, "An error has occurred!", new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Subcategory Does Not Exist!"));
     }
 
     @PutMapping
-    public ResponseEntity<?> updateSubcategory(@RequestBody Subcategory subcategory) {
+    public ObjectResponse<Subcategory> updateSubcategory(@RequestBody Subcategory subcategory) {
         if (inventoryAndCatalogValidator.isValid(subcategory)) {
             Subcategory updatedSubcategory = subcategoryService.createOrUpdateSubcategory(subcategory);
-            return ResponseEntity.status(200).body(updatedSubcategory);
+            return new ObjectResponse<>(200, updatedSubcategory, null);
         }
-        return ResponseEntity.status(409).body(inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
+        return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(subcategory));
     }
 
     //Sorting and Pagination
     @GetMapping("/search")
-    public ResponseEntity<?> readSubcategories (Pageable pageable){
+    public PaginatedObjectResponse<Subcategory> readSubcategories (Pageable pageable){
         try{
-            return ResponseEntity.status(200).body(subcategoryService.readAndSortSubcategories(pageable));
+            return subcategoryService.readAndSortSubcategories(pageable);
         }catch (PropertyReferenceException e){
-            return ResponseEntity.status(409).body(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage()));
+            return PaginatedObjectResponse.<Subcategory>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
         }
     }
 }
