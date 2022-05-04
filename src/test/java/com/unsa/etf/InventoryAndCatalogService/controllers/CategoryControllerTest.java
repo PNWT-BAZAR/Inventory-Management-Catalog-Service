@@ -121,7 +121,6 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.foundObjects[1].name").exists());
     }
 
-
     public static String asJsonString(final Object obj) {
         try {
             System.out.println((new ObjectMapper().writeValueAsString(obj)));
