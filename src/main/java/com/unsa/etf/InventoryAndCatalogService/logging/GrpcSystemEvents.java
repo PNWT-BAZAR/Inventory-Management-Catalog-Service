@@ -1,27 +1,32 @@
-//package com.unsa.etf.InventoryAndCatalogService.logging;
-//
-//import com.netflix.appinfo.InstanceInfo;
-//import com.netflix.discovery.EurekaClient;
-//import io.grpc.ManagedChannelBuilder;
-//import lombok.RequiredArgsConstructor;
-//import net.devh.boot.grpc.client.inject.GrpcClient;
-//import org.springframework.stereotype.Service;
-//
-//import java.time.Instant;
-//
-//@Service
-//@RequiredArgsConstructor
-//public class GrpcSystemEvents {
-////    @GrpcClient("systemEvents")
-////    ReportSystemEventGrpc.ReportSystemEventBlockingStub stub;
-//
-//    public void logEvent(String microserviceName, String username, String actionType, String resourceName, String responseType){
-////        try{
-////            Instant now = Instant.now();
-////            InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("SystemEventsService", false);
-////            var managedChannel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), 9090).usePlaintext().build();
-////
-////        }
-//
-//    }
-//}
+package com.unsa.etf.InventoryAndCatalogService.logging;
+
+import com.unsa.etf.SystemEventsService.LogRequest;
+import com.unsa.etf.SystemEventsService.LoggingServiceGrpc;
+import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class GrpcSystemEvents {
+    @GrpcClient("SystemEventsService")
+    LoggingServiceGrpc.LoggingServiceBlockingStub client;
+
+    public void logEvent(String microserviceName, String username, String actionType, String resourceName, String responseType){
+        try{
+            var request = LogRequest.newBuilder()
+                    .setMicroserviceName(microserviceName)
+                    .setActionType(actionType)
+                    .setUsername(username)
+                    .setResponseType(responseType)
+                    .setResourceName(resourceName)
+                    .build();
+
+            var response = client.loggingService(request);
+            System.out.println("Logged event");
+        }catch (Exception e){
+            System.out.println("An error has occurred: " + e.getMessage());
+        }
+
+    }
+}

@@ -31,7 +31,9 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ObjectResponse<Category> getCategoryById(@PathVariable String id) {
+        System.out.println("category");
         Category category = categoryService.getCategoryById(id);
+        System.out.println(category);
         if (category == null) {
             return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Category Does Not Exist!"));
         }
