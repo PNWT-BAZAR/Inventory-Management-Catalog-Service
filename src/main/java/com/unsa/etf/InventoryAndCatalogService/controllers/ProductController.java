@@ -2,28 +2,28 @@ package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.unsa.etf.InventoryAndCatalogService.insertObject.ProductReview;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
+import com.unsa.etf.InventoryAndCatalogService.rabbitmq.RabbitMessageSender;
 import com.unsa.etf.InventoryAndCatalogService.responses.*;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
     private final InventoryAndCatalogValidator inventoryAndCatalogValidator;
+    private final RabbitMessageSender rabbitMessageSender;
 
-    @Autowired
-    public ProductController(ProductService productService, InventoryAndCatalogValidator inventoryAndCatalogValidator) {
-        this.productService = productService;
-        this.inventoryAndCatalogValidator = inventoryAndCatalogValidator;
-    }
+//    @GetMapping("/rabbit")
+//    public void testRabbitMq(){
+//        rabbitTemplate.convertAndSend(InventoryAndCatalogServiceApplication.topicExchangeName, "foo.bar.#", Product.builder().name("kemo").build());
+//    }
+
 
     @GetMapping
     public ObjectListResponse<Product> getAllProducts() {
@@ -43,6 +43,7 @@ public class ProductController {
     public ObjectResponse<Product> createNewProduct(@RequestBody Product product) {
         if (inventoryAndCatalogValidator.isValid(product)) {
             Product newProduct = productService.createOrUpdateProduct(product);
+            rabbitMessageSender.notifyOrderServiceOfChange(newProduct, "add");
             return new ObjectResponse<>(200, product, null);
         }
         return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(product));
@@ -50,9 +51,12 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ObjectDeletionResponse deleteProduct(@PathVariable String id) {
+        var productToBeDeleted = productService.getProductById(id);
         boolean deleted = productService.deleteProductById(id);
-        if (deleted)
+        if (deleted){
+            rabbitMessageSender.notifyOrderServiceOfChange(productToBeDeleted, "delete");
             return new ObjectDeletionResponse(200, "Product successfully deleted!", null);
+        }
         return new ObjectDeletionResponse(409, "Error has occurred!", new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
     }
 
@@ -60,6 +64,7 @@ public class ProductController {
     public ObjectResponse<Product> updateProduct(@RequestBody Product product) {
         if (inventoryAndCatalogValidator.isValid(product)) {
             Product updatedProduct = productService.createOrUpdateProduct(product);
+            rabbitMessageSender.notifyOrderServiceOfChange(updatedProduct, "update");
             return new ObjectResponse<>(200, updatedProduct, null);
         }
         return new ObjectResponse<>(409, null, inventoryAndCatalogValidator.determineConstraintViolation(product));
@@ -73,6 +78,7 @@ public class ProductController {
             product.setTotalReviews(product.getTotalReviews() + 1);
 
             Product updatedProduct = productService.createOrUpdateProduct(product);
+            rabbitMessageSender.notifyOrderServiceOfChange(updatedProduct, "update");
             return new ObjectResponse<>(200, updatedProduct, null);
         }
         return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));

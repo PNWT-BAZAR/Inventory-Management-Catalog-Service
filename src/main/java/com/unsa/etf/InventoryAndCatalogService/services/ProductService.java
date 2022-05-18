@@ -1,8 +1,10 @@
 package com.unsa.etf.InventoryAndCatalogService.services;
 
+import com.unsa.etf.InventoryAndCatalogService.InventoryAndCatalogServiceApplication;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,6 +74,4 @@ public class ProductService {
         Page<Product> products = productRepository.findProductBySubcategory(subcategory, pageable);
         return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
     }
-
-
 }

@@ -1,29 +1,16 @@
 package com.unsa.etf.InventoryAndCatalogService;
 
-import com.unsa.etf.InventoryAndCatalogService.model.Category;
-import com.unsa.etf.InventoryAndCatalogService.model.Product;
-import com.unsa.etf.InventoryAndCatalogService.model.ProductImages;
-import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
-import com.unsa.etf.InventoryAndCatalogService.repositories.CategoryRepository;
-import com.unsa.etf.InventoryAndCatalogService.repositories.ProductImagesRepository;
-import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
-import com.unsa.etf.InventoryAndCatalogService.repositories.SubcategoryRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.Bean;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 @EnableDiscoveryClient
 @SpringBootApplication
 public class InventoryAndCatalogServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InventoryAndCatalogServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(InventoryAndCatalogServiceApplication.class, args);
+    }
 
 //	@Bean
 //	CommandLineRunner commandLineRunner (CategoryRepository categoryRepository, ProductImagesRepository productImagesRepository, ProductRepository productRepository, SubcategoryRepository subcategoryRepository) {
