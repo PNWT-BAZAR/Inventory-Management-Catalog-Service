@@ -68,12 +68,21 @@ public class CategoryController {
     }
 
     //Sorting and Pagination
+//    @GetMapping("/search")
+//    public PaginatedObjectResponse<Category> readCategories (Pageable pageable){
+//        try{
+//            return categoryService.readAndSortCategories(pageable);
+//        }catch (PropertyReferenceException e){
+//            return PaginatedObjectResponse.<Category>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+//        }
+//    }
+
     @GetMapping("/search")
-    public PaginatedObjectResponse<Category> readCategories (Pageable pageable){
+    public ObjectListResponse<Category> searchCategoriesByName (@RequestParam String searchInput){
         try{
-            return categoryService.readAndSortCategories(pageable);
-        }catch (PropertyReferenceException e){
-            return PaginatedObjectResponse.<Category>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+            return new ObjectListResponse<>(200, categoryService.searchCategoriesByName(searchInput), null);
+        }catch (Exception e){
+            return ObjectListResponse.<Category>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
         }
     }
 

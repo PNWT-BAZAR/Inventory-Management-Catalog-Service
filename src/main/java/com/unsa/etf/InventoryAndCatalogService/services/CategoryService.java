@@ -51,6 +51,10 @@ public class CategoryService {
         return newCategory;
     }
 
+    public List<Category> searchCategoriesByName (String searchInput){
+        return categoryRepository.findByNameContaining(searchInput);
+    }
+
     //Sorting and Pagination
     public PaginatedObjectResponse<Category> readAndSortCategories (Pageable pageable){
 

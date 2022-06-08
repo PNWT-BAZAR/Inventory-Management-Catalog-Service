@@ -1,6 +1,7 @@
 package com.unsa.etf.InventoryAndCatalogService.services;
 
 import com.unsa.etf.InventoryAndCatalogService.InventoryAndCatalogServiceApplication;
+import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
@@ -57,6 +58,10 @@ public class ProductService {
     public PaginatedObjectResponse<Product> readAndSortProducts (Pageable pageable){
         Page<Product> products = productRepository.findAll(pageable);
         return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
+    }
+
+    public List<Product> searchProductsByName (String searchInput){
+        return productRepository.findByNameContaining(searchInput);
     }
 
     //Filtering

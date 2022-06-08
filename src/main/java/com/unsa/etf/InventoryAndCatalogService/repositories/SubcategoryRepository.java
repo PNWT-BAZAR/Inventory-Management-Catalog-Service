@@ -4,6 +4,7 @@ import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface SubcategoryRepository extends JpaRepository<Subcategory, String
     List<Subcategory> findSubcategoriesByName(String name);
 
     List<Subcategory> findSubcategoriesByCategory(Category category);
+
+    List<Subcategory> findByNameContaining (@Param(value = "name") String name);
 }

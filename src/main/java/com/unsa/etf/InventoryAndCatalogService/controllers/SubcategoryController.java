@@ -1,5 +1,6 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
+import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.responses.*;
 import com.unsa.etf.InventoryAndCatalogService.services.SubcategoryService;
@@ -65,18 +66,27 @@ public class SubcategoryController {
     }
 
     //Sorting and Pagination
-    @GetMapping("/search")
-    public PaginatedObjectResponse<Subcategory> readSubcategories (Pageable pageable){
-        try{
-            return subcategoryService.readAndSortSubcategories(pageable);
-        }catch (PropertyReferenceException e){
-            return PaginatedObjectResponse.<Subcategory>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
-        }
-    }
+//    @GetMapping("/search")
+//    public PaginatedObjectResponse<Subcategory> readSubcategories (Pageable pageable){
+//        try{
+//            return subcategoryService.readAndSortSubcategories(pageable);
+//        }catch (PropertyReferenceException e){
+//            return PaginatedObjectResponse.<Subcategory>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+//        }
+//    }
 
     @GetMapping("/searchByCategory")
     public ObjectListResponse<Subcategory> getSubcategoriesByCategory(@RequestParam(value = "category", required = true) String categoryName){
         var subcategories = subcategoryService.getSubcategoriesByCategory(categoryName);
         return new ObjectListResponse<>(200, subcategories, null);
+    }
+
+    @GetMapping("/search")
+    public ObjectListResponse<Subcategory> searchSubcategoriesByName (@RequestParam String searchInput){
+        try{
+            return new ObjectListResponse<>(200, subcategoryService.searchSubcategoriesByName(searchInput), null);
+        }catch (Exception e){
+            return ObjectListResponse.<Subcategory>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+        }
     }
 }

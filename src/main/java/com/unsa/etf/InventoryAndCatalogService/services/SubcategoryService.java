@@ -53,4 +53,8 @@ public class SubcategoryService {
         System.out.println(categories.size());
         return subcategoryRepository.findSubcategoriesByCategory(categories.get(0));
     }
+
+    public List<Subcategory> searchSubcategoriesByName (String searchInput){
+        return subcategoryRepository.findByNameContaining(searchInput);
+    }
 }

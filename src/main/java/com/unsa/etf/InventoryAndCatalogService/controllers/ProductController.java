@@ -1,6 +1,7 @@
 package com.unsa.etf.InventoryAndCatalogService.controllers;
 
 import com.unsa.etf.InventoryAndCatalogService.insertObject.ProductReview;
+import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.rabbitmq.RabbitMessageSender;
 import com.unsa.etf.InventoryAndCatalogService.responses.*;
@@ -85,14 +86,14 @@ public class ProductController {
     }
 
     //Sorting and Pagination
-    @GetMapping("/search")
-    public PaginatedObjectResponse<Product> readProducts (Pageable pageable){
-        try{
-            return productService.readAndSortProducts(pageable);
-        }catch (PropertyReferenceException e){
-            return PaginatedObjectResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
-        }
-    }
+//    @GetMapping("/search")
+//    public PaginatedObjectResponse<Product> readProducts (Pageable pageable){
+//        try{
+//            return productService.readAndSortProducts(pageable);
+//        }catch (PropertyReferenceException e){
+//            return PaginatedObjectResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+//        }
+//    }
 
     //Filtering
     @GetMapping("/filter")
@@ -105,6 +106,15 @@ public class ProductController {
             return productService.filterProductsBySubcategory(subcategory, pageable);
         }
         return PaginatedObjectResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, "An error has occurred!")).build();
+    }
+
+    @GetMapping("/search")
+    public ObjectListResponse<Product> searchProductsByName (@RequestParam String searchInput){
+        try{
+            return new ObjectListResponse<>(200, productService.searchProductsByName(searchInput), null);
+        }catch (Exception e){
+            return ObjectListResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+        }
     }
 
 }
