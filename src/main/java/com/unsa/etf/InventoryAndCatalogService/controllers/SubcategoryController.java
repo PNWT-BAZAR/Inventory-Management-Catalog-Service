@@ -73,4 +73,10 @@ public class SubcategoryController {
             return PaginatedObjectResponse.<Subcategory>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
         }
     }
+
+    @GetMapping("/searchByCategory")
+    public ObjectListResponse<Subcategory> getSubcategoriesByCategory(@RequestParam(value = "category", required = true) String categoryName){
+        var subcategories = subcategoryService.getSubcategoriesByCategory(categoryName);
+        return new ObjectListResponse<>(200, subcategories, null);
+    }
 }

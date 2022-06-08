@@ -12,4 +12,6 @@ import java.util.List;
 public interface SubcategoryRepository extends JpaRepository<Subcategory, String> {
     @Query("SELECT s FROM Subcategory s WHERE s.name=?1")
     List<Subcategory> findSubcategoriesByName(String name);
+
+    List<Subcategory> findSubcategoriesByCategory(Category category);
 }

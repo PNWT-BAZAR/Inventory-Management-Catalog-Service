@@ -31,7 +31,7 @@ public class InventoryAndCatalogServiceApplication {
 //			Product product2 = new Product("kozna fotelja MIRNA", "veoma dobra fotelja", 35, 330.33f, category1, subcategory2, 5, 5);
 //			productRepository.saveAll(Arrays.asList(product, product1, product2));
 //
-//			ProductImages productImages = new ProductImages(product);
+//			ProductImage productImages = new ProductImage(product);
 //			productImagesRepository.saveAll(Arrays.asList(productImages));
 //		};
 //	}

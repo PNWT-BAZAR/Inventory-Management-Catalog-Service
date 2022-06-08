@@ -1,8 +1,10 @@
 package com.unsa.etf.InventoryAndCatalogService.services;
 
+import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.repositories.SubcategoryRepository;
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,13 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SubcategoryService {
     private final SubcategoryRepository subcategoryRepository;
-
-    @Autowired
-    public SubcategoryService(SubcategoryRepository subcategoryRepository) {
-        this.subcategoryRepository = subcategoryRepository;
-    }
+    private final CategoryService categoryService;
 
     public List<Subcategory> getAllSubcategories() {
         return subcategoryRepository.findAll();
@@ -47,5 +46,11 @@ public class SubcategoryService {
     public PaginatedObjectResponse<Subcategory> readAndSortSubcategories (Pageable pageable){
         Page<Subcategory> subcategories = subcategoryRepository.findAll(pageable);
         return new PaginatedObjectResponse<>(200, subcategories.getContent(), subcategories.getTotalElements(), subcategories.getTotalPages(), null);
+    }
+
+    public List<Subcategory> getSubcategoriesByCategory(String categoryName){
+        var categories = categoryService.getCategoryByName(categoryName);
+        System.out.println(categories.size());
+        return subcategoryRepository.findSubcategoriesByCategory(categories.get(0));
     }
 }

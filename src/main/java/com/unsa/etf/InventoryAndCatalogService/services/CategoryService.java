@@ -30,6 +30,10 @@ public class CategoryService {
         return null;
     }
 
+    public List<Category> getCategoryByName (String name){
+        return categoryRepository.findCategoriesByName(name);
+    }
+
     public boolean deleteCategoryById(String id) {
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);

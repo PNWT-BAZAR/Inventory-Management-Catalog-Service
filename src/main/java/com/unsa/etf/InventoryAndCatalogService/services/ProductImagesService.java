@@ -1,6 +1,6 @@
 package com.unsa.etf.InventoryAndCatalogService.services;
 
-import com.unsa.etf.InventoryAndCatalogService.model.ProductImages;
+import com.unsa.etf.InventoryAndCatalogService.model.ProductImage;
 import com.unsa.etf.InventoryAndCatalogService.repositories.ProductImagesRepository;
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,11 @@ public class ProductImagesService {
         this.productImagesRepository = productImagesRepository;
     }
 
-    public List<ProductImages> getAllProductImages() {
+    public List<ProductImage> getAllProductImages() {
         return productImagesRepository.findAll();
     }
 
-    public ProductImages getProductImageById(String id) {
+    public ProductImage getProductImageById(String id) {
         if(productImagesRepository.existsById(id)) {
             return productImagesRepository.findById(id).get();
         }
@@ -38,17 +38,17 @@ public class ProductImagesService {
         return false;
     }
 
-    public ProductImages createOrUpdateProductImage(ProductImages productImages) {
-        productImagesRepository.save(productImages);
-        return productImages;
+    public ProductImage createOrUpdateProductImage(ProductImage productImage) {
+        productImagesRepository.save(productImage);
+        return productImage;
     }
 
     // TODO: 22.03.2022. get images
 
 
     //Sorting and Pagination
-    public PaginatedObjectResponse<ProductImages> readAndSortProductImages (Pageable pageable){
-        Page<ProductImages> productImages = productImagesRepository.findAll(pageable);
+    public PaginatedObjectResponse<ProductImage> readAndSortProductImages (Pageable pageable){
+        Page<ProductImage> productImages = productImagesRepository.findAll(pageable);
         return new PaginatedObjectResponse<>(200, productImages.getContent(), productImages.getTotalElements(), productImages.getTotalPages(), null);
     }
 }

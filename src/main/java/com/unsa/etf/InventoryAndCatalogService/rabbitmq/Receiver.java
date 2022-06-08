@@ -16,26 +16,26 @@ public class Receiver {
     private final CategoryService categoryService;
     private final SubcategoryService subcategoryService;
 
-    @RabbitListener(queues = "orders-to-inventory")
-    public void receiveMessage(ProductRabbitReceiverModel message) {
-        var receivedProduct = message.getProduct();
-        var failedOperation = message.getOperation();
-        System.out.println(receivedProduct);
-        System.out.println(receivedProduct);
-        System.out.println(failedOperation);
-
-        switch (failedOperation){
-            case "add":
-                onAddFailed(receivedProduct);
-                break;
-            case "update":
-                onUpdateFailed(receivedProduct);
-                break;
-            case "delete":
-                onDeleteFailed(receivedProduct);
-                break;
-        }
-    }
+//    @RabbitListener(queues = "orders-to-inventory")
+//    public void receiveMessage(ProductRabbitReceiverModel message) {
+//        var receivedProduct = message.getProduct();
+//        var failedOperation = message.getOperation();
+//        System.out.println(receivedProduct);
+//        System.out.println(receivedProduct);
+//        System.out.println(failedOperation);
+//
+//        switch (failedOperation){
+//            case "add":
+//                onAddFailed(receivedProduct);
+//                break;
+//            case "update":
+//                onUpdateFailed(receivedProduct);
+//                break;
+//            case "delete":
+//                onDeleteFailed(receivedProduct);
+//                break;
+//        }
+//    }
 
     public void onAddFailed(OrderServiceProduct orderServiceProduct){
         productService.deleteProductById(orderServiceProduct.getId());

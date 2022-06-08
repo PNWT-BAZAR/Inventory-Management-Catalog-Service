@@ -12,19 +12,25 @@ import javax.persistence.*;
 @Entity
 @Table
 @NoArgsConstructor
-public class ProductImages {
+public class ProductImage {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(columnDefinition = "CHAR(32)")
     private String id;
 
+    private String name;
+
+    private byte[] image;
+
     //private BinaryData image;
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
 
-    public ProductImages(Product product) {
+    public ProductImage(String name, byte[] image, Product product) {
+        this.name = name;
+        this.image = image;
         this.product = product;
     }
 }
