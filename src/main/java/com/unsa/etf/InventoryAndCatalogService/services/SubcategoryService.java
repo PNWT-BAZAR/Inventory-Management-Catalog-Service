@@ -6,6 +6,8 @@ import com.unsa.etf.InventoryAndCatalogService.repositories.SubcategoryRepositor
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,13 +50,16 @@ public class SubcategoryService {
         return new PaginatedObjectResponse<>(200, subcategories.getContent(), subcategories.getTotalElements(), subcategories.getTotalPages(), null);
     }
 
-    public List<Subcategory> getSubcategoriesByCategory(String categoryName){
-        var categories = categoryService.getCategoryByName(categoryName);
-        System.out.println(categories.size());
-        return subcategoryRepository.findSubcategoriesByCategory(categories.get(0));
+    public List<Subcategory> getSubcategoriesByCategory(String categoryId){
+        var category = categoryService.getCategoryById(categoryId);
+        return subcategoryRepository.findSubcategoriesByCategory(category);
     }
 
     public List<Subcategory> searchSubcategoriesByName (String searchInput){
         return subcategoryRepository.findByNameContaining(searchInput);
+    }
+
+    public List<Subcategory> getAllSubcategoriesWithFilter (Example<Subcategory> filter){
+        return subcategoryRepository.findAll(filter);
     }
 }

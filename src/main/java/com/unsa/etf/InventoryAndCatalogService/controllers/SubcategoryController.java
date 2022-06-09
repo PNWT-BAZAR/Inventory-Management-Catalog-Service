@@ -3,9 +3,14 @@ package com.unsa.etf.InventoryAndCatalogService.controllers;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.responses.*;
+import com.unsa.etf.InventoryAndCatalogService.services.CategoryService;
 import com.unsa.etf.InventoryAndCatalogService.services.SubcategoryService;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +18,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/subcategories")
 public class SubcategoryController {
     private final SubcategoryService subcategoryService;
+    private final CategoryService categoryService;
     private final InventoryAndCatalogValidator inventoryAndCatalogValidator;
 
-    @Autowired
-    public SubcategoryController(SubcategoryService subcategoryService, InventoryAndCatalogValidator inventoryAndCatalogValidator) {
-        this.subcategoryService = subcategoryService;
-        this.inventoryAndCatalogValidator = inventoryAndCatalogValidator;
-    }
-
     @GetMapping
-    public ObjectListResponse<Subcategory> getAllSubcategories() {
+    public ObjectListResponse<Subcategory> getSubcategories(){
         return new ObjectListResponse<>(200, subcategoryService.getAllSubcategories(), null);
     }
 
@@ -81,12 +84,35 @@ public class SubcategoryController {
         return new ObjectListResponse<>(200, subcategories, null);
     }
 
+//    @GetMapping("/search")
+//    public ObjectListResponse<Subcategory> searchSubcategoriesByName (@RequestParam String searchInput){
+//        try{
+//            return new ObjectListResponse<>(200, subcategoryService.searchSubcategoriesByName(searchInput), null);
+//        }catch (Exception e){
+//            return ObjectListResponse.<Subcategory>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+//        }
+//    }
+
     @GetMapping("/search")
-    public ObjectListResponse<Subcategory> searchSubcategoriesByName (@RequestParam String searchInput){
-        try{
-            return new ObjectListResponse<>(200, subcategoryService.searchSubcategoriesByName(searchInput), null);
-        }catch (Exception e){
-            return ObjectListResponse.<Subcategory>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+    public ObjectListResponse<Subcategory> getSubcategories(
+            @RequestParam(required = false, name = "subcategoryId") String subcategoryId,
+            @RequestParam(required = false, name = "categoryId") String categoryId,
+            @RequestParam(required = false, name = "searchInput") String searchInput
+    ) {
+
+        Category category = null;
+        if(categoryId != null){
+            category = categoryService.getCategoryById(categoryId);
         }
+        ExampleMatcher matcher = ExampleMatcher
+                .matchingAll()
+                .withMatcher("name", contains().ignoreCase());
+        var subcategoryFilter = Subcategory.builder()
+                .id(subcategoryId)
+                .name(searchInput)
+                .category(category)
+                .build();
+
+        return new ObjectListResponse<>(200, subcategoryService.getAllSubcategoriesWithFilter(Example.of(subcategoryFilter, matcher)), null);
     }
 }
