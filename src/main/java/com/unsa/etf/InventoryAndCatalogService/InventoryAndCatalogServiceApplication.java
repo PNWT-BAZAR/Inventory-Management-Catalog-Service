@@ -43,6 +43,7 @@ public class InventoryAndCatalogServiceApplication {
             Subcategory subcategory2 = new Subcategory("Corner sofa", category);
 			//Dining room subcategories
 			Subcategory subcategory3 = new Subcategory("Dining table", category1);
+
             Subcategory subcategory4 = new Subcategory("Dining chair", category1);
 			//Bedroom subcategories
             Subcategory subcategory5 = new Subcategory("Mattress", category2);
@@ -58,11 +59,9 @@ public class InventoryAndCatalogServiceApplication {
 														subcategory6, subcategory7, subcategory8, subcategory9, subcategory11,
 														subcategory12));
 
-			Product product = new Product("Alpha Marble Top Coffee Table Square",
-                    "Stylish square coffee table supported by matt brass effect geometric criss cross legs and a heavy real marble top with natural grey marble streaks.",
-                    25, 4.5f, category, subcategory1, 0, 0);
-			ProductImage productImage0_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8291.jpg", product);
-			ProductImage productImage0_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8291b.jpg", product);
+
+//			ProductImage productImage0_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8291.jpg", product);
+//			ProductImage productImage0_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8291b.jpg", product);
 
 			Product product1 = new Product("Artisan Oval Coffee Table",
                     "Beautifully crafted from recycled pine wood, the Artisan oval coffee table will become the focal point of any room.",
@@ -196,11 +195,10 @@ public class InventoryAndCatalogServiceApplication {
 			ProductImage productImage20_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197.jpg", product20);
 			ProductImage productImage20_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197b.jpg",product20);
 
-			productRepository.saveAll(Arrays.asList(product, product1, product2, product3, product4, product5, product6, product7, product8, product9,
+			productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9,
 													product10, product11, product12, product13, product14, product15, product16, product17, product18,
 													product19, product20));
-			productImagesRepository.saveAll(Arrays.asList(productImage0_1, productImage0_2,
-														productImage1_1, productImage1_2,
+			productImagesRepository.saveAll(Arrays.asList(productImage1_1, productImage1_2,
 														productImage2_1, productImage2_2,
 														productImage3_1, productImage3_2, productImage3_3,
 														productImage4_1, productImage4_2, productImage4_3,
