@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +25,6 @@ public class ProductController {
 //    public void testRabbitMq(){
 //        rabbitTemplate.convertAndSend(InventoryAndCatalogServiceApplication.topicExchangeName, "foo.bar.#", Product.builder().name("kemo").build());
 //    }
-
 
     @GetMapping
     public ObjectListResponse<Product> getAllProducts() {
