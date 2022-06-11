@@ -4,22 +4,26 @@ import com.unsa.etf.InventoryAndCatalogService.model.ProductImage;
 import com.unsa.etf.InventoryAndCatalogService.responses.*;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductImagesService;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/productImages")
 public class ProductImageController {
     private final ProductImagesService productImagesService;
     private final InventoryAndCatalogValidator inventoryAndCatalogValidator;
 
-    @Autowired
-    public ProductImageController(ProductImagesService productImagesService, InventoryAndCatalogValidator inventoryAndCatalogValidator) {
-        this.productImagesService = productImagesService;
-        this.inventoryAndCatalogValidator = inventoryAndCatalogValidator;
-    }
+//    @Autowired
+//    public ProductImageController(ProductImagesService productImagesService, InventoryAndCatalogValidator inventoryAndCatalogValidator) {
+//        this.productImagesService = productImagesService;
+//        this.inventoryAndCatalogValidator = inventoryAndCatalogValidator;
+//    }
 
     @GetMapping
     public ObjectListResponse<ProductImage> getAllProductImages() {
@@ -35,6 +39,15 @@ public class ProductImageController {
         return new ObjectResponse<>(200, productImage, null);
     }
 
+    @GetMapping("/product/{id}")
+    public ObjectListResponse<ProductImage> getProductImageByProductId(@PathVariable String id) {
+        List<ProductImage> productImages = productImagesService.getProductImageByProductId(id);
+//        if (productImage == null) {
+//            return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
+//        }
+        return new ObjectListResponse<>(200, productImages, null);
+    }
+
     @PostMapping
     public ObjectResponse<ProductImage> createNewProductImage(@RequestBody ProductImage productImage) {
         if (inventoryAndCatalogValidator.isValid(productImage)) {
@@ -48,7 +61,7 @@ public class ProductImageController {
     public ObjectDeletionResponse deleteProductImage(@PathVariable String id) {
         boolean deleted = productImagesService.deleteProductImageById(id);
         if (deleted)
-            return new ObjectDeletionResponse(200, "Product image successfullz deleted", null);
+            return new ObjectDeletionResponse(200, "Product image successfully deleted", null);
         return new ObjectDeletionResponse(409, "An error has occurred!", new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product image Does Not Exist!"));
     }
 

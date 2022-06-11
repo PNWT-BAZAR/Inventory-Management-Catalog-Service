@@ -19,18 +19,17 @@ public class ProductImage {
     @Column(columnDefinition = "CHAR(32)")
     private String id;
 
-    private String name;
+    private String url;
 
-    private byte[] image;
+//    private byte[] image;
 
     //private BinaryData image;
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
 
-    public ProductImage(String name, byte[] image, Product product) {
-        this.name = name;
-        this.image = image;
+    public ProductImage(String url, Product product) {
+        this.url = url;
         this.product = product;
     }
 }

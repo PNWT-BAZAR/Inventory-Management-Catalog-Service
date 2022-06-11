@@ -5,7 +5,10 @@ import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
 import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.rabbitmq.RabbitMessageSender;
-import com.unsa.etf.InventoryAndCatalogService.responses.*;
+import com.unsa.etf.InventoryAndCatalogService.responses.BadRequestResponseBody;
+import com.unsa.etf.InventoryAndCatalogService.responses.ObjectDeletionResponse;
+import com.unsa.etf.InventoryAndCatalogService.responses.ObjectListResponse;
+import com.unsa.etf.InventoryAndCatalogService.responses.ObjectResponse;
 import com.unsa.etf.InventoryAndCatalogService.services.CategoryService;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
 import com.unsa.etf.InventoryAndCatalogService.services.SubcategoryService;
@@ -13,11 +16,10 @@ import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogVal
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +46,7 @@ public class ProductController {
     public ObjectResponse<Product> getProductById(@PathVariable String id) {
         Product product = productService.getProductById(id);
         if (product == null) {
-            return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!" ));
+            return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
         }
         return new ObjectResponse<>(200, product, null);
     }
@@ -63,7 +65,7 @@ public class ProductController {
     public ObjectDeletionResponse deleteProduct(@PathVariable String id) {
         var productToBeDeleted = productService.getProductById(id);
         boolean deleted = productService.deleteProductById(id);
-        if (deleted){
+        if (deleted) {
             rabbitMessageSender.notifyOrderServiceOfChange(productToBeDeleted, "delete");
             return new ObjectDeletionResponse(200, "Product successfully deleted!", null);
         }
@@ -104,10 +106,10 @@ public class ProductController {
 
         Category category = null;
         Subcategory subcategory = null;
-        if(categoryId != null){
+        if (categoryId != null) {
             category = categoryService.getCategoryById(categoryId);
         }
-        if(subcategoryId != null){
+        if (subcategoryId != null) {
             subcategory = subcategoryService.getSubcategoryById(subcategoryId);
         }
 

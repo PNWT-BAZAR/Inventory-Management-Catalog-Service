@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -49,7 +50,7 @@ public class Product {
     @Min(0)
     private Integer totalReviews;
 
-    public Product(String name, String description, int quantity, float price, Category category, Subcategory subcategory, int reviewSum, int totalReviews) {
+        public Product(String name, String description, int quantity, float price, Category category, Subcategory subcategory, int reviewSum, int totalReviews) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
