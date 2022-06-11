@@ -29,10 +29,10 @@ public class Product {
     private String description;
 
     @Min(0)
-    private int quantity;
+    private Integer quantity;
 
     @Min(0)
-    private float price;
+    private Float price;
 
     @NotNull
     @ManyToOne
@@ -44,10 +44,10 @@ public class Product {
     private Subcategory subcategory;
 
     @Min(0)
-    private int reviewSum;
+    private Integer reviewSum;
 
     @Min(0)
-    private int totalReviews;
+    private Integer totalReviews;
 
     public Product(String name, String description, int quantity, float price, Category category, Subcategory subcategory, int reviewSum, int totalReviews) {
         this.name = name;

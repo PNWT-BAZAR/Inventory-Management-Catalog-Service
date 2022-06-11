@@ -3,10 +3,12 @@ package com.unsa.etf.InventoryAndCatalogService.services;
 import com.unsa.etf.InventoryAndCatalogService.InventoryAndCatalogServiceApplication;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
+import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.repositories.ProductRepository;
 import com.unsa.etf.InventoryAndCatalogService.responses.PaginatedObjectResponse;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -65,18 +67,7 @@ public class ProductService {
     }
 
     //Filtering
-    public PaginatedObjectResponse<Product> filterProductsByCategoryAndSubcategory(String category, String subcategory, Pageable pageable) {
-        Page<Product> products = productRepository.findProductByCategoryAndSubcategory(category, subcategory, pageable);
-        return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
-    }
-
-    public PaginatedObjectResponse<Product> filterProductsByCategory(String category, Pageable pageable) {
-        Page<Product> products = productRepository.findProductByCategory(category, pageable);
-        return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
-    }
-
-    public PaginatedObjectResponse<Product> filterProductsBySubcategory(String subcategory, Pageable pageable) {
-        Page<Product> products = productRepository.findProductBySubcategory(subcategory, pageable);
-        return new PaginatedObjectResponse<>(200, products.getContent(), products.getTotalElements(), products.getTotalPages(), null);
+    public List<Product> getAllProductsWithFilter (Example<Product> filter){
+        return productRepository.findAll(filter);
     }
 }

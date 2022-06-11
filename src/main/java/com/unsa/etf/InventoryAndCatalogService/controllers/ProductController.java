@@ -3,20 +3,29 @@ package com.unsa.etf.InventoryAndCatalogService.controllers;
 import com.unsa.etf.InventoryAndCatalogService.insertObject.ProductReview;
 import com.unsa.etf.InventoryAndCatalogService.model.Category;
 import com.unsa.etf.InventoryAndCatalogService.model.Product;
+import com.unsa.etf.InventoryAndCatalogService.model.Subcategory;
 import com.unsa.etf.InventoryAndCatalogService.rabbitmq.RabbitMessageSender;
 import com.unsa.etf.InventoryAndCatalogService.responses.*;
+import com.unsa.etf.InventoryAndCatalogService.services.CategoryService;
 import com.unsa.etf.InventoryAndCatalogService.services.ProductService;
+import com.unsa.etf.InventoryAndCatalogService.services.SubcategoryService;
 import com.unsa.etf.InventoryAndCatalogService.validators.InventoryAndCatalogValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private final CategoryService categoryService;
+    private final SubcategoryService subcategoryService;
     private final InventoryAndCatalogValidator inventoryAndCatalogValidator;
     private final RabbitMessageSender rabbitMessageSender;
 
@@ -85,36 +94,36 @@ public class ProductController {
         return new ObjectResponse<>(409, null, new BadRequestResponseBody(BadRequestResponseBody.ErrorCode.NOT_FOUND, "Product Does Not Exist!"));
     }
 
-    //Sorting and Pagination
-//    @GetMapping("/search")
-//    public PaginatedObjectResponse<Product> readProducts (Pageable pageable){
-//        try{
-//            return productService.readAndSortProducts(pageable);
-//        }catch (PropertyReferenceException e){
-//            return PaginatedObjectResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
-//        }
-//    }
-
-    //Filtering
-    @GetMapping("/filter")
-    public PaginatedObjectResponse<Product> readProductsWithFilter (@RequestParam(value = "category", required = false) String category, @RequestParam(value = "subcategory", required = false) String subcategory, Pageable pageable) {
-        if(category != null && subcategory != null){
-            return productService.filterProductsByCategoryAndSubcategory(category, subcategory, pageable);
-        }else if(category != null){
-            return productService.filterProductsByCategory(category, pageable);
-        }else if(subcategory != null){
-            return productService.filterProductsBySubcategory(subcategory, pageable);
-        }
-        return PaginatedObjectResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, "An error has occurred!")).build();
-    }
 
     @GetMapping("/search")
-    public ObjectListResponse<Product> searchProductsByName (@RequestParam String searchInput){
-        try{
-            return new ObjectListResponse<>(200, productService.searchProductsByName(searchInput), null);
-        }catch (Exception e){
-            return ObjectListResponse.<Product>builder().statusCode(409).error(new BadRequestResponseBody (BadRequestResponseBody.ErrorCode.NOT_FOUND, e.getMessage())).build();
+    public ObjectListResponse<Product> getProductsWithFilter(
+            @RequestParam(required = false, name = "subcategoryId") String subcategoryId,
+            @RequestParam(required = false, name = "categoryId") String categoryId,
+            @RequestParam(required = false, name = "searchInput") String searchInput
+    ) {
+
+        Category category = null;
+        Subcategory subcategory = null;
+        if(categoryId != null){
+            category = categoryService.getCategoryById(categoryId);
         }
+        if(subcategoryId != null){
+            subcategory = subcategoryService.getSubcategoryById(subcategoryId);
+        }
+
+        ExampleMatcher matcher = ExampleMatcher
+                .matchingAll()
+                .withMatcher("name", contains().ignoreCase());
+        var productFilter = Product.builder()
+                .name(searchInput)
+                .category(category)
+                .subcategory(subcategory)
+                .build();
+
+        System.out.println(productFilter);
+        var lista = productService.getAllProductsWithFilter(Example.of(productFilter, matcher));
+        System.out.println(lista);
+        return new ObjectListResponse<>(200, productService.getAllProductsWithFilter(Example.of(productFilter, matcher)), null);
     }
 
 }
