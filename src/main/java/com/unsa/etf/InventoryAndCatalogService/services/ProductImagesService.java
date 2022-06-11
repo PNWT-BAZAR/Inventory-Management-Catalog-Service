@@ -51,4 +51,8 @@ public class ProductImagesService {
         Page<ProductImage> productImages = productImagesRepository.findAll(pageable);
         return new PaginatedObjectResponse<>(200, productImages.getContent(), productImages.getTotalElements(), productImages.getTotalPages(), null);
     }
+
+    public List<ProductImage> getProductImageByProductId(String id) {
+        return productImagesRepository.getImagesByProductId(id);
+    }
 }
