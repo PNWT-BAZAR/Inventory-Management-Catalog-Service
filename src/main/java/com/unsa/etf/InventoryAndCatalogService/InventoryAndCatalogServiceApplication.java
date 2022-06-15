@@ -33,20 +33,31 @@ public class InventoryAndCatalogServiceApplication {
 			Category category = new Category("Living room");
 			Category category1 = new Category("Dining room");
             Category category2 = new Category("Bedroom");
-            Category category3 = new Category("Kitchen");
+            Category category3 = new Category("Office");
             Category category4 = new Category("Bathroom");
 			categoryRepository.saveAll(Arrays.asList(category, category1, category2, category3, category4));
 
+			//Living room subcategories
 			Subcategory subcategory = new Subcategory("Sofa", category);
 			Subcategory subcategory1 = new Subcategory("Coffee table", category);
             Subcategory subcategory2 = new Subcategory("Corner sofa", category);
+			//Dining room subcategories
 			Subcategory subcategory3 = new Subcategory("Dining table", category1);
 
             Subcategory subcategory4 = new Subcategory("Dining chair", category1);
+			//Bedroom subcategories
             Subcategory subcategory5 = new Subcategory("Mattress", category2);
             Subcategory subcategory6 = new Subcategory("Wardrobe", category2);
 			Subcategory subcategory7 = new Subcategory("Bedside table", category2);
-			subcategoryRepository.saveAll(Arrays.asList(subcategory, subcategory1, subcategory2, subcategory3, subcategory4, subcategory5, subcategory6, subcategory7));
+			//Office subcategories
+			Subcategory subcategory8 = new Subcategory("Chair", category3);
+			Subcategory subcategory9 = new Subcategory("Desk", category3);
+			//Bathroom subcategories
+			Subcategory subcategory11 = new Subcategory("Mirror", category4);
+			Subcategory subcategory12 = new Subcategory("Cabinet", category4);
+			subcategoryRepository.saveAll(Arrays.asList(subcategory, subcategory1, subcategory2, subcategory3, subcategory4, subcategory5,
+														subcategory6, subcategory7, subcategory8, subcategory9, subcategory11,
+														subcategory12));
 
 
 			Product product1 = new Product("Artisan Oval Coffee Table",
@@ -116,9 +127,75 @@ public class InventoryAndCatalogServiceApplication {
 			ProductImage productImage10_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416d.jpg", product10);
 			ProductImage productImage10_4 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416e.jpg", product10);
 
-			productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10));
-			productImagesRepository.saveAll(Arrays.asList(
-														productImage1_1, productImage1_2,
+			Product product11 = new Product("Hypnos Orthocare Supreme Mattress",
+					"With a naturally firmer feel, the Orthocare Supreme features a luxury layer of soft bamboo, which is natural, plant-based and breathable, and organic cotton and flax helping keep sleepers cool at night.",
+					30, 820.00f, category2, subcategory5, 30, 6);
+			ProductImage productImage11_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9238.jpg", product11);
+			ProductImage productImage11_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9238h.jpg",product11);
+
+			Product product12 = new Product("Walbury Pillow Top Mattress",
+					"With a naturally firmer feel, the Orthocare Supreme features a luxury layer of soft bamboo, which is natural, plant-based and breathable, and organic cotton and flax helping keep sleepers cool at night.",
+					30, 1250.00f, category2, subcategory5, 27, 6);
+			ProductImage productImage12_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9550.jpg", product12);
+			ProductImage productImage12_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9550b.jpg",product12);
+
+			Product product13 = new Product("White Linen Tower with 2 Drawers",
+					"Short on storage space in small bathrooms? This linen tower comes to help. With a slim and compact design, it helps you organize all your toiletries and bath items while taking up a little space.",
+					30, 450.00f, category4, subcategory12, 27, 8);
+			ProductImage productImage13_1 = new ProductImage("https://static.songmics.com/fit-in/750x750/image/Product/UBBC66WT/Tall-Bathroom-Cabinet-UBBC66WT-3.jpg", product13);
+			ProductImage productImage13_2 = new ProductImage("https://static.songmics.com/fit-in/750x750/image/Product/UBBC66WT/Tall-Bathroom-Cabinet-UBBC66WT-2.jpg",product13);
+
+			Product product14 = new Product("Fiddock Champagne Mirror",
+					"The modern Fiddock mirror is the perfect size for checking your appearance whilst bringing more light into the room and finished with a wide angled champagne coloured frame.",
+					35, 299.99f, category4, subcategory11, 30, 9);
+			ProductImage productImage14_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7610.jpg", product14);
+			ProductImage productImage14_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7610b.jpg",product14);
+
+			Product product15 = new Product("Richmond Wall Mirror Grey",
+					"The Richmond style is an understated and simple classical look featuring a curved top to the frame and a thin profile. With distressed paint work and Georgian proportions the Richmond wall mirror is perfect for any space.",
+					35, 79.99f, category4, subcategory11, 31, 9);
+			ProductImage productImage15_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626.jpg", product15);
+			ProductImage productImage15_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626b.jpg",product15);
+			ProductImage productImage15_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626c.jpg",product15);
+
+			Product product16 = new Product("White Free Standing Cabinet",
+					"Ample storage space provided by an open shelf and a double shutter door cabinet with an adjustable shelf (3 heights available), you can remove the shelf for larger items; perfect as shoe cabinet, console cabinet, storage cabinet and etc. With a slim and compact design, it helps you organize all your toiletries and bath items while taking up a little space.",
+					17, 210.00f, category4, subcategory12, 20, 6);
+			ProductImage productImage16_1 = new ProductImage("https://static.songmics.com/fit-in/750x750/image/Product/UBBC40WT/BBC40WT-3.jpg", product16);
+			ProductImage productImage16_2 = new ProductImage("https://static.songmics.com/fit-in/750x750/image/Product/UBBC40WT/BBC40WT-2.jpg",product16);
+			ProductImage productImage16_3 = new ProductImage("https://static.songmics.com/fit-in/750x750/image/Product/UBBC40WT/BBC40WT-1.jpg",product16);
+
+			Product product17 = new Product("Retro Desk Chair - Brandy",
+					"Ample storage space provided by an open shelf and a double shutter door cabinet with an adjustable shelf (3 heights available), you can remove the shelf for larger items; perfect as shoe cabinet, console cabinet, storage cabinet and etc. With a slim and compact design, it helps you organize all your toiletries and bath items while taking up a little space.",
+					17, 159.99f, category3, subcategory8, 29, 6);
+			ProductImage productImage17_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358.jpg", product17);
+			ProductImage productImage17_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358e.jpg",product17);
+			ProductImage productImage17_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358f.jpg",product17);
+
+			Product product18 = new Product("Orion Office Chair",
+					"The Orion Office Chair is a very comfortable modern office chair, with gas lift height adjustment, and double padding on seat and back. The chair is upholstered in a gorgously soft grey faux leather and of course, it has wheels!",
+					17, 299.99f, category3, subcategory8, 26, 6);
+			ProductImage productImage18_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909.jpg", product18);
+			ProductImage productImage18_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909b.jpg",product18);
+			ProductImage productImage18_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909g.jpg",product18);
+
+			Product product19 = new Product("Larris Desk",
+					"A fun addition for your home study space, the Larris desk combines a deep, warm walnut coloured wood with clear dark and light grey panels. The back of the unit lifts up to allow you to tuck away any cables rather than leaving them to hang out of the back and the two front drawers ensures you have storage space to keep the working area clutter free when you're not using the desk.",
+					17, 219.99f, category3, subcategory8, 30, 6);
+			ProductImage productImage19_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196.jpg", product19);
+			ProductImage productImage19_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196b.jpg",product19);
+			ProductImage productImage19_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196d.jpg",product19);
+
+			Product product20 = new Product("Manis Desk",
+					"An excellent choice of desk for your home study space or even as a somewhere to sit and study to one side. Its grey metal legs complement the white wash of the wood beautifully giving it a lighter, airy feel.",
+					17, 219.99f, category3, subcategory8, 27, 6);
+			ProductImage productImage20_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197.jpg", product20);
+			ProductImage productImage20_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197b.jpg",product20);
+
+			productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9,
+													product10, product11, product12, product13, product14, product15, product16, product17, product18,
+													product19, product20));
+			productImagesRepository.saveAll(Arrays.asList(productImage1_1, productImage1_2,
 														productImage2_1, productImage2_2,
 														productImage3_1, productImage3_2, productImage3_3,
 														productImage4_1, productImage4_2, productImage4_3,
@@ -127,8 +204,17 @@ public class InventoryAndCatalogServiceApplication {
 														productImage7_1, productImage7_2, productImage7_3, productImage7_4,
 														productImage8_1, productImage8_2, productImage8_3,
 														productImage9_1, productImage9_2,
-														productImage10_1, productImage10_2, productImage10_3, productImage10_4));
-
+														productImage10_1, productImage10_2, productImage10_3, productImage10_4,
+														productImage11_1, productImage11_2,
+														productImage12_1, productImage12_2,
+														productImage13_1, productImage13_2,
+														productImage14_1, productImage14_2,
+														productImage15_1, productImage15_2, productImage15_3,
+														productImage16_1, productImage16_2, productImage16_3,
+														productImage17_1, productImage17_2, productImage17_3,
+														productImage18_1, productImage18_2, productImage18_3,
+														productImage19_1, productImage19_2, productImage19_3,
+														productImage20_1, productImage20_2));
 		};
 	}
 

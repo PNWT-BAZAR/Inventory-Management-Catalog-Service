@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
@@ -35,7 +34,6 @@ public class ProductController {
 //    public void testRabbitMq(){
 //        rabbitTemplate.convertAndSend(InventoryAndCatalogServiceApplication.topicExchangeName, "foo.bar.#", Product.builder().name("kemo").build());
 //    }
-
 
     @GetMapping
     public ObjectListResponse<Product> getAllProducts() {
