@@ -49,9 +49,6 @@ public class InventoryAndCatalogServiceApplication {
 			subcategoryRepository.saveAll(Arrays.asList(subcategory, subcategory1, subcategory2, subcategory3, subcategory4, subcategory5, subcategory6, subcategory7));
 
 
-			ProductImage productImage0_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8291.jpg", product);
-			ProductImage productImage0_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8291b.jpg", product);
-
 			Product product1 = new Product("Artisan Oval Coffee Table",
                     "Beautifully crafted from recycled pine wood, the Artisan oval coffee table will become the focal point of any room.",
                     10, 700.99f, category, subcategory1, 0, 5);
@@ -119,8 +116,8 @@ public class InventoryAndCatalogServiceApplication {
 			ProductImage productImage10_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416d.jpg", product10);
 			ProductImage productImage10_4 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416e.jpg", product10);
 
-			productRepository.saveAll(Arrays.asList(product, product1, product2, product3, product4, product5, product6, product7, product8, product9, product10));
-			productImagesRepository.saveAll(Arrays.asList(productImage0_1, productImage0_2,
+			productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9, product10));
+			productImagesRepository.saveAll(Arrays.asList(
 														productImage1_1, productImage1_2,
 														productImage2_1, productImage2_2,
 														productImage3_1, productImage3_2, productImage3_3,
