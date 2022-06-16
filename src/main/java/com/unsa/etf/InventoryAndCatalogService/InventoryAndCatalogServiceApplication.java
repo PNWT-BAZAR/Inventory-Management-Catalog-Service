@@ -63,81 +63,81 @@ public class InventoryAndCatalogServiceApplication {
 			Product product1 = new Product("Artisan Oval Coffee Table",
                     "Beautifully crafted from recycled pine wood, the Artisan oval coffee table will become the focal point of any room.",
                     10, 700.99f, category, subcategory1, 0, 5);
-			ProductImage productImage1_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8006.jpg", product1);
-			ProductImage productImage1_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8006b.jpg", product1);
+			ProductImage productImage1_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8006_7523.jpg", product1);
+			ProductImage productImage1_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8006_7524.jpg", product1);
 
 			Product product2 = new Product("Faro Corner Sofa",
                     "The Faro Corner Sofa is a great addition to the home. It's generous chaise section is perfect for relaxing with your feet up.",
                     35, 330.33f, category, subcategory2, 5, 5);
-			ProductImage productImage2_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8837b.jpg", product2);
-			ProductImage productImage2_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8837.jpg", product2);
+			ProductImage productImage2_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8837_3619.jpg", product2);
+			ProductImage productImage2_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8837_3618.jpg", product2);
 
-			Product product3 = new Product("Faro Corner SofaIndustrial Step Coffee Table",
+			Product product3 = new Product("Industrial Step Coffee Table",
 					"With it's solid timber tops and great split level design, the step coffee table is a great addition to the living room. Supported by powder coated black metal legs.",
 					4, 379.00f, category, subcategory1, 12, 3);
-			ProductImage productImage3_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8971.jpg", product3);
-			ProductImage productImage3_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8971c.jpg", product3);
-			ProductImage productImage3_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/large/8971d.jpg", product3);
+			ProductImage productImage3_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8971_2993.jpg", product3);
+			ProductImage productImage3_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8971_2994.jpg", product3);
+			ProductImage productImage3_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8971_2994.jpg", product3);
 
 			Product product4 = new Product("Chase Dining Chair - Teal Velvet (Set of 2)",
 					"The Chase teal velvet dining chairs add a stylish touch to dining. Featuring a slightly bucketed seat with quilted velvet upholstery, and industrial style black powder coated metal legs for support.",
 					4, 450.00f, category1, subcategory4, 20, 6);
-			ProductImage productImage4_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8891.jpg", product4);
-			ProductImage productImage4_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8891b.jpg", product4);
-			ProductImage productImage4_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8891h.jpg", product4);
+			ProductImage productImage4_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8891_3393.jpg", product4);
+			ProductImage productImage4_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8891_3394.jpg", product4);
+			ProductImage productImage4_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8891_3395.jpg", product4);
 
 			Product product5 = new Product("Industrial Dining Table",
 					"The Industrial dining table has a robust solid wood top with a simple, metal crossed leg base. Available in 2 different sizes for you to choose from, this industrial dining table will add modern, industrial style to your home.",
 					7, 750.00f, category1, subcategory3, 13, 3);
-			ProductImage productImage5_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8147.jpg", product5);
-			ProductImage productImage5_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8147c.jpg", product5);
+			ProductImage productImage5_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8147_7076.jpg", product5);
+			ProductImage productImage5_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8147_7077.jpg", product5);
 
 			Product product6 = new Product("Ridley Round Dining Table 120cm",
 					"The Ridley Dining Table is a chunky lesson in industrial styling, with a big star formation base made from metal coated in a grey powder paint and a thick top wrapped in a textured oak effect foil. It has a lovely feel and not being real wood is easy to keep clean and is made to last.",					2, 249.99f, category1, subcategory3, 13, 3);
-			ProductImage productImage6_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8614.jpg", product6);
-			ProductImage productImage6_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8614b.jpg", product6);
-			ProductImage productImage6_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8614c.jpg", product6);
+			ProductImage productImage6_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8614_4459.jpg", product6);
+			ProductImage productImage6_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8614_4460.jpg", product6);
+			ProductImage productImage6_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8614_4461.jpg", product6);
 
 			Product product7 = new Product("Hudson Medium Oak Extendable Table 1.8m - 2.2m",
 					"The Hudson Collection is built from hardwood and oak veneers and is designed for real life. The pieces are very sturdy and weighty, and not least this medium size oak extendable dining table. Extending from 1.8m long to a crowd pleasing 2.2m with a butterfly method.",
 					4, 1099.99f, category1, subcategory3, 15, 3);
-			ProductImage productImage7_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992.jpg", product7);
-			ProductImage productImage7_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992b.jpg", product7);
-			ProductImage productImage7_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992c.jpg", product7);
-			ProductImage productImage7_4 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992g.jpg", product7);
+			ProductImage productImage7_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992_2852.jpg", product7);
+			ProductImage productImage7_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992_2853.jpg", product7);
+			ProductImage productImage7_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992_2854.jpg", product7);
+			ProductImage productImage7_4 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8992_2855.jpg", product7);
 
 			Product product8 = new Product("Didcot Large Bedside Cabinet",
 					"Beautifully painted in classic white, the Didcot large white bedside cabinet is a timeless piece of bedroom furniture. This white bedside cabinet features 2 drawers with dark contrasting handles, it will look truly stylish in any bedroom.",
 					10, 103.99f, category2, subcategory7, 14, 3);
-			ProductImage productImage8_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7286.jpg", product8);
-			ProductImage productImage8_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7286c.jpg", product8);
-			ProductImage productImage8_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7286e.jpg", product8);
+			ProductImage productImage8_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7286_8915.jpg", product8);
+			ProductImage productImage8_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7286_8916.jpg", product8);
+			ProductImage productImage8_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7286_8917.jpg", product8);
 
 			Product product9 = new Product("Hudson Bedside Cabinet",
 					"The Hudson Bedside Chest is a small chest, perfect for use where space around the bed is at a premium. It features three small drawers with cup handles and is crafted from solid oak and oak veneers. The corners are smoothed into curves and this little piece really lets the natural wood tones shine through.",
 					11, 199.99f, category2, subcategory7, 14, 3);
-			ProductImage productImage9_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8454.jpg", product9);
-			ProductImage productImage9_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8454b.jpg", product9);
+			ProductImage productImage9_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8454_5502.jpg", product9);
+			ProductImage productImage9_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8454_5503.jpg", product9);
 
 			Product product10 = new Product("Nairn 1 Drawer Wardrobe",
 					"The Nairn Wardrobe, built from solid oak with oak veneers and featuring a large hanging space and internal shelf is an absolutely gorgeous wardrobe. The two doors fronted by two contrasting knobs and this is carried through to the exposed finger joins on the front of the single draw at the base of the wardrobe.",
 					7, 799.00f, category2, subcategory6, 28, 6);
-			ProductImage productImage10_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416.jpg", product10);
-			ProductImage productImage10_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416c.jpg", product10);
-			ProductImage productImage10_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416d.jpg", product10);
-			ProductImage productImage10_4 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416e.jpg", product10);
+			ProductImage productImage10_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416_5671.jpg", product10);
+			ProductImage productImage10_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416_5672.jpg", product10);
+			ProductImage productImage10_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416_5674.jpg", product10);
+			ProductImage productImage10_4 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8416_5675.jpg", product10);
 
 			Product product11 = new Product("Hypnos Orthocare Supreme Mattress",
 					"With a naturally firmer feel, the Orthocare Supreme features a luxury layer of soft bamboo, which is natural, plant-based and breathable, and organic cotton and flax helping keep sleepers cool at night.",
 					30, 820.00f, category2, subcategory5, 30, 6);
-			ProductImage productImage11_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9238.jpg", product11);
-			ProductImage productImage11_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9238h.jpg",product11);
+			ProductImage productImage11_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9238_1650.jpg", product11);
+			ProductImage productImage11_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9238_1651.jpg",product11);
 
 			Product product12 = new Product("Walbury Pillow Top Mattress",
 					"With a naturally firmer feel, the Orthocare Supreme features a luxury layer of soft bamboo, which is natural, plant-based and breathable, and organic cotton and flax helping keep sleepers cool at night.",
 					30, 1250.00f, category2, subcategory5, 27, 6);
-			ProductImage productImage12_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9550.jpg", product12);
-			ProductImage productImage12_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9550b.jpg",product12);
+			ProductImage productImage12_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9550_21298.jpg", product12);
+			ProductImage productImage12_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9550_21299.jpg",product12);
 
 			Product product13 = new Product("White Linen Tower with 2 Drawers",
 					"Short on storage space in small bathrooms? This linen tower comes to help. With a slim and compact design, it helps you organize all your toiletries and bath items while taking up a little space.",
@@ -148,15 +148,15 @@ public class InventoryAndCatalogServiceApplication {
 			Product product14 = new Product("Fiddock Champagne Mirror",
 					"The modern Fiddock mirror is the perfect size for checking your appearance whilst bringing more light into the room and finished with a wide angled champagne coloured frame.",
 					35, 299.99f, category4, subcategory11, 30, 9);
-			ProductImage productImage14_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7610.jpg", product14);
-			ProductImage productImage14_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7610b.jpg",product14);
+			ProductImage productImage14_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7610_8453.jpg", product14);
+			ProductImage productImage14_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/7610_8454.jpg",product14);
 
 			Product product15 = new Product("Richmond Wall Mirror Grey",
 					"The Richmond style is an understated and simple classical look featuring a curved top to the frame and a thin profile. With distressed paint work and Georgian proportions the Richmond wall mirror is perfect for any space.",
 					35, 79.99f, category4, subcategory11, 31, 9);
-			ProductImage productImage15_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626.jpg", product15);
-			ProductImage productImage15_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626b.jpg",product15);
-			ProductImage productImage15_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626c.jpg",product15);
+			ProductImage productImage15_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626_4418.jpg", product15);
+			ProductImage productImage15_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626_4419.jpg",product15);
+			ProductImage productImage15_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8626_4420.jpg",product15);
 
 			Product product16 = new Product("White Free Standing Cabinet",
 					"Ample storage space provided by an open shelf and a double shutter door cabinet with an adjustable shelf (3 heights available), you can remove the shelf for larger items; perfect as shoe cabinet, console cabinet, storage cabinet and etc. With a slim and compact design, it helps you organize all your toiletries and bath items while taking up a little space.",
@@ -168,29 +168,29 @@ public class InventoryAndCatalogServiceApplication {
 			Product product17 = new Product("Retro Desk Chair - Brandy",
 					"Ample storage space provided by an open shelf and a double shutter door cabinet with an adjustable shelf (3 heights available), you can remove the shelf for larger items; perfect as shoe cabinet, console cabinet, storage cabinet and etc. With a slim and compact design, it helps you organize all your toiletries and bath items while taking up a little space.",
 					17, 159.99f, category3, subcategory8, 29, 6);
-			ProductImage productImage17_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358.jpg", product17);
-			ProductImage productImage17_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358e.jpg",product17);
-			ProductImage productImage17_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358f.jpg",product17);
+			ProductImage productImage17_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358_1124.jpg", product17);
+			ProductImage productImage17_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358_1126.jpg",product17);
+			ProductImage productImage17_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/9358_1128.jpg",product17);
 
 			Product product18 = new Product("Orion Office Chair",
 					"The Orion Office Chair is a very comfortable modern office chair, with gas lift height adjustment, and double padding on seat and back. The chair is upholstered in a gorgously soft grey faux leather and of course, it has wheels!",
 					17, 299.99f, category3, subcategory8, 26, 6);
-			ProductImage productImage18_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909.jpg", product18);
-			ProductImage productImage18_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909b.jpg",product18);
-			ProductImage productImage18_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909g.jpg",product18);
+			ProductImage productImage18_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909_3277.jpg", product18);
+			ProductImage productImage18_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909_3278.jpg",product18);
+			ProductImage productImage18_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8909_3282.jpg",product18);
 
 			Product product19 = new Product("Larris Desk",
 					"A fun addition for your home study space, the Larris desk combines a deep, warm walnut coloured wood with clear dark and light grey panels. The back of the unit lifts up to allow you to tuck away any cables rather than leaving them to hang out of the back and the two front drawers ensures you have storage space to keep the working area clutter free when you're not using the desk.",
 					17, 219.99f, category3, subcategory8, 30, 6);
-			ProductImage productImage19_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196.jpg", product19);
-			ProductImage productImage19_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196b.jpg",product19);
-			ProductImage productImage19_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196d.jpg",product19);
+			ProductImage productImage19_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196_6812.jpg", product19);
+			ProductImage productImage19_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196_6813.jpg",product19);
+			ProductImage productImage19_3 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8196_6815.jpg",product19);
 
 			Product product20 = new Product("Manis Desk",
 					"An excellent choice of desk for your home study space or even as a somewhere to sit and study to one side. Its grey metal legs complement the white wash of the wood beautifully giving it a lighter, airy feel.",
 					17, 219.99f, category3, subcategory8, 27, 6);
-			ProductImage productImage20_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197.jpg", product20);
-			ProductImage productImage20_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197b.jpg",product20);
+			ProductImage productImage20_1 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197_6809.jpg", product20);
+			ProductImage productImage20_2 = new ProductImage("https://www.woods-furniture.co.uk/images/products/standard/8197_6810.jpg",product20);
 
 			productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6, product7, product8, product9,
 													product10, product11, product12, product13, product14, product15, product16, product17, product18,
